@@ -1,0 +1,2262 @@
+% 公立はこだて未来大学 卒業論文 テンプレート ver1.50
+% (c) Junichi Akita (akita@fun.ac.jp), 2003.10.31
+% update by N.T.,  2004.11.10
+%
+\documentclass{funthesis}
+%\documentclass[english]{funthesis} % use [english] option for English style
+
+%\usepackage{graphicx} % 図(EPS形式)を本文中で読み込む場合はこれを宣言
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{url}
+
+\usepackage{listings,jlisting}
+
+\lstset{%
+  language={C},
+  basicstyle={\small},%
+  identifierstyle={\small},%
+  commentstyle={\small\itshape},%
+  keywordstyle={\small\bfseries},%
+  ndkeywordstyle={\small},%
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},%
+  numbers=left,%
+  xrightmargin=0zw,%
+  xleftmargin=3zw,%
+  numberstyle={\scriptsize},%
+  stepnumber=1,
+  numbersep=1zw,%
+  lineskip=-0.5ex%
+}
+
+% この部分に，タイトル・氏名などを書く．
+% タイトルなどの定義の始まり
+\jtitle{コード生成を用いたフレームワーク向け\\
+Webアプリケーション開発支援ツールの作成
+}  % 論文の和文タイトル
+%
+\etitle{Making a Support Tool of Web Application Development for Framework Using Code Generation
+}% 論文の英文タイトル
+%
+\htitle{Making a Support Tool of Web Application Development for Framework Using Code Generation}   % ヘッダー用の論文の短縮英文タイトル
+%     必ず1行に収まるように英文タイトルを短縮する．
+%
+\jauthor{京谷 和明}     % 氏名(日本語)
+\eauthor{Kazuaki Kyoya}   % 氏名(英語)
+\jaffiliciation{情報アーキテクチャ学科} % 所属学科名(日本語)
+\eaffiliciation{Department of Media Architecture} % 所属学科名(英語)
+\studentnumber{1011129}   % 学籍番号
+\jadvisor{伊藤 恵}    % 正指導教員名(日本語)
+%\jcoadvisor{副指導 教員} % 副指導教員(日本語)がいる場合は
+                        % コメントアウトし名前を書く
+                        % 副指導教員がいない場合は，ここは削除しても可
+\eadvisor{Assoc. Prof. Kei Ito}  % 正指導教員名(英語)
+%\ecoadvisor{Prof. Coadvisor}   % 副指導教員(英語)がいる場合は
+                         % コメントアウトし名前を書く
+                         % 副指導教員がいない場合は，ここは削除しても可
+\jdate{2015年1月30日}    % 論文提出日   (日本語)
+\edate{January 30, 2015}     % 論文提出年月　(英語)
+% タイトルなどの定義の終わり
+
+\begin{document}
+
+%--------------------------------------------------------------------
+\maketitle       % タイトルページを作成
+
+%--------------------------------------------------------------------
+% 英文概要(250語程度)
+\begin{eabstract}
+Recent years, Web application development is more needed the short delivery time and high quality. Therefore, various frameworks are used in Web application development. But if developers use such framework, they often write similar code, so development working with framework is inefficient. In addition,  definition and rules of frameworks are different. So learning period about the framework is often lengthy. And, if engineers who do not know about the framework use the framework, development processes to touch up and modify may will be longer. On the other hand, Web application development use various auto code generation. But for using code generation tools, developers must deeply understand about the model for the tools, and they must write details in the model, and learning period about the model is often lengthy. So this study made a semi-automatic code generating tool that the conforming CakePHP architecture. The input models of this tool are ER model and screen transition that diagrams are typical created in Web application development.  I applied this tool to a management system of appointment  of interview. As a result, 80\% source codes including redundant parts were generated. And, this tool can flexibly generate more amount of source code than other auto code generation tools for CakePHP. By this tool, developers rapidly develop Web application and the generated codes are high quality based on the framework. So, this tool is thought as a utility support tool of Web application development, although this tool has several research tasks. In addition, this tool may be able to solve various other research tasks by develop this tool. So, I will solve these research tasks, and I want to improve performance of this tool.
+
+\end{eabstract}
+
+% 英文キーワード(5個程度をコンマ(,)で区切って羅列する)
+\begin{ekeyword}
+Web Application Development, Code Generation Tool, Framework, Model, CakePHP
+\end{ekeyword}
+
+%--------------------------------------------------------------------
+% 和文概要(400字程度)
+\begin{jabstract}
+近年，Webアプリケーション開発では，より一層の短納期化，高品質化が求められている．そのため，Webアプリケーション開発には様々なフレームワークが用いられていることが多い．しかし，フレームワークを用いる場合，類似したコードを記述することも多く，開発作業が非効率となる．その上フレームワークごとに定義や作法が異なるため，そのことを学習するのに時間がかかってしまい，その定義や作法を知らないまま開発を進めてしまうと後々加筆修正を行う際に余計に時間がかかってしまうことがある．一方で，効率化のため自動生成ツールを用いる場面も増えてきている．しかし，自動生成ツールを用いる場合は，生成元のモデルについて深く理解し，細部まで記述しなければならないことが多く，その自動生成ツールを扱うための学習期間が長くなってしまうことがある．そこで本研究では，Webアプリケーションの作成を行う際に，一般的に作成され，理解のしやすいモデルである画面遷移図とER図より，CakePHPのアーキテクチャに則ったコードを半自動で生成することのできるツールの作成を行った．作成したツールを面談予約管理システムに適用したところ，システム全体の8割程度を生成することができ，冗長な部分を生成することができた．CakePHPの機能を自動生成できる他のツールと比較しても，本ツールのほうが生成率が高く，柔軟に自動生成を行うことができていた．そのため，機敏に開発を行うことができ，フレームワークによる質の良いコードが生成できたと思われる．開発支援ツールとして有用性のあるツールを作成することができたが，いくつか課題が残っていることも判明した．また，本ツールを発展させることにより，様々な他の課題も解決できるのではないかと思われる．そのため，今後はその課題を解決し，ツールの性能を向上させていきたい．
+
+\end{jabstract}
+
+% 和文キーワード(5個程度をコンマ(,)で区切って羅列する)
+\begin{jkeyword}
+Webアプリケーション開発, 自動生成ツール, フレームワーク, モデル, CakePHP
+\end{jkeyword}
+
+%--------------------------------------------------------------------
+\tableofcontents % 目次を作成
+
+
+% 本文のはじまり
+%--------------------------------------------------------------------
+\chapter{序論} % 章のタイトル
+%\chapter{Introduction} % sample of English style
+Webアプリケーション開発では，より一層の短納期化，高品質化が求められている．この目的を達成するために，様々なWebアプリケーションのフレームワークや，ソースコードの自動生成ツールが導入されている．しかし，このフレームワークや自動生成ツールには様々な問題を抱えており，導入がうまく行えていない事例が多々ある．本研究ではそのことに着目し，課題を上げ，その課題を解決していくことにした．
+
+% \includegraphics[width=??cm]{hoge.eps} % 図(EPS形式)を読み込む場合
+
+\section{背景} % sectionのタイトル
+
+% 以下に背景，関連する環境，状況，技術に関する概要を記述．
+Webアプリケーションの開発では様々なフレームワークが用いられることが多い．フレームワークとはソフトウェアを開発する際の枠組みとなるものであり，頻繁に作成される機能やコードをまとめて提供することで，システム開発の支援をしている．Webアプリケーションのフレームワークとして，例えばRubyのフレームワークであるRuby on Rails，PHPのフレームワークであるCakePHPなどが挙げられる．Webアプリケーションの開発にフレームワークを用いるメリットとしては一般的に開発工数の削減と品質の均質化などが挙げられる．デメリットとしては，フレームワークごとに定義や作法が異なり，そのフレームワークを扱うのに学習期間が長くなってしまい，学習したとしても他のフレームワークでは扱うことができないことがある．また，そのフレームワークの作法を知らないまま開発を進めてしまうと，後々デバッグやテストを行う際に余計な時間がかかってしまうことが多い，といったことが挙げられる．\\
+　また，Webアプリケーションの開発には自動生成ツールを導入する場面が増えてきている．自動生成の例としては，各クラスの名前や属性や関数などを図で表すクラス図やオブジェクト間の処理の流れを図で表すシーケンス図といった，統一モデリング言語（UML）や，設計書から直接自動生成を行う場合がある．或いは独自規格を作成し，それに則って画面レイアウトや機能を決定し，そこからソースコードを自動で生成する製品も存在する．自動生成ツールを導入するメリットとしては，開発工数の削減と品質の均質化，設計したドキュメントや図を最大限に活用できるといったことが挙げられる．同様に，デメリットとしてはモデルから自動生成を行う場合は設計の段階で非常に細かいところまで機能の洗い出しをして設計しなければならないことが多く，独自規格の自動生成ツールを扱う場合は学習期間が長くなってしまうことが多いことである．\\
+
+\section{対象とする領域}
+ここではWebアプリケーション開発プロセスにおける，設計と実装に関する部分について研究する．設計工程ではモデリングを行い，実装ではフレームワークを導入する．設計段階で作成したモデルファイルに自動生成ツールを導入することで，一部のソースコードの生成を行い，実装段階における作業を減らすことを行う．
+
+\section{研究目標}
+
+%完全な処理系の実装を目指すものではなく，プログラミング言語にオブジェク
+%ト指向という考え方を取り入れたプログラミング言語を設計し，プロトタイプ
+%システムを作成することにより，オブジェクト指向の概念が，プログラミング
+%の能率向上とメンテナンス性の向上に寄与することを示す．
+本研究では，学習期間があまり長くならず，設計も簡単に行うことができ，さらにコメントも充実させた雛形を生成することで機敏に開発を行うことのできるツールの作成を行うことを目的とする．\\
+　今回はソースコードの自動生成に関する研究目標でよく挙げられる，自動生成率を高めることで，ソフトウェアの完全な自動生成を目指すものではなく，設計段階で必要とするモデルを簡単なものにし，そのモデルに追記する情報を少なくすることで，開発工数を確実に減らすことのできるツールの作成を目指す．なお，今回はレイアウトの自動生成に関する部分は考慮せず，機能的な部分の自動生成を行えるようにする．
+
+%--------------------------------------------------------------------
+\chapter{関連研究}
+
+\section{フレームワーク}
+本研究で扱う題材として，フレームワークがある．フレームワークは「同じ目的のアプリケーションなら，同じような書き方をする」という考えに基づいて，「同じような書き方」のところはすでに実働可能な構造や形式で提供され，使用者は自分の固有の目的に合わせて一部だけを書き換えたり書き足したりすればよい\cite{ruby2}，という考え方に基づいたアプリケーションの作成方式である．フレームワークを導入することにより，複雑な部分，冗長な部分はフレームワークが行ってくれ，自分は目的に合わせて一部だけに集中して実装を行うことができる．
+
+\subsection{Ruby on Rails}
+本研究で扱うフレームワークであるCakePHPが，大いな影響を受けたのがRuby on Railsである．Ruby on Railsの登場以前は，Webアプリケーションの開発というものは，データベースやサーバの複雑な知識といった，様々な知識を持たないと作成が難しいものであった．また，データベースの連携も自分で行わないといけないため，コードの中にSQLを書かなければならないことが多く，コードが肥大化し，非常に可読性が低いものとなることが多かった．2004年の夏頃に登場したRuby on Railsはこれらのことを解決すべく作成されたものであり，データベースとの連携を自動で行い，MVCアーキテクチャに則ってコーディングを行うことで，Webアプリケーション開発の着手が容易になり，コードの可読性も向上した．Railsの揺るぎない基盤として，Don't Repeat Yourself(繰り返しを避けよ)とConvention over Configuration(設定より規約)\cite{agiruby}がある．Railsのアプリケーションは1箇所にそのことを記述すれば，大抵のことはMVCアーキテクチャが案内してくれ，そこから先に進むことで，機能が実現できる．また，Railsの規約に従ってコーディングを行うことで，Railsが適切なデフォルトの動作を用意し，そこからすぐに目的の機能が実現できる．CakePHPはこのRailsの流れを汲んだものであり，思想や設計手法などの影響を大いに受けている．
+
+\subsection{CakePHP}
+本研究ではWebアプリケーション開発フレームワークである，CakePHP用のソースコードを生成する．CakePHPはPHPで記述されたオープンソースソフトウェアのフレームワークであり，公式サイト\cite{cakephp}からパッケージファイルをダウンロードすることで利用可能である．ダウンロードした圧縮ファイルを展開すると，図2.1のようなディレクトリ構造となっている．
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[width=5cm]{structure.eps}
+\caption{CakePHPのディレクトリ構造}
+\end{center}
+\end{figure}
+
+CakePHPは他のライブラリをインストールする必要はなく，展開したフォルダをWebサーバ上にコピーするだけで，使えるようになる\cite{cakebook}．CakePHPには，様々なヘルパーや，コンポーネントといったものが用意されており，それらを利用することで，PHPのコードだけでなく，HTMLやJavaScriptといった言語のサポートも行い，スムーズなコーディングが行えるようになっている．また，有志が作成したCakePHPのコードをプラグインとして配布することで，他の人がそれを入手し，ソースコードを流用できるような仕組みにもなっている．さらに，CakePHPは多くのリレーショナルデータベース管理システムと連結することができ，MVCアーキテクチャに準拠している．MVCとはModel-View-Controllerの頭文字をとったものであり，図2.1のappフォルダの直下にそれぞれのディレクトリが存在していることがわかる．図2.2は，CakePHPにおけるMVCアーキテクチャの基本構造である．
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[width=8cm]{mvc.eps}
+\caption{CakePHPにおけるMVCアーキテクチャの基本構造}
+\end{center}
+\end{figure}
+
+Controllerにシステムの機能の内部処理を記述し，主にViewとModelにデータの受け渡しを行う．Viewでは画面への出力法を記述し，PHPだけではなく，HTMLやJavaScript，CSSといった言語も記述可能である．Modelではデータベース周りのことを記述し，データベースとの連携を行う．このようにMVCアーキテクチャに則ってコーディングを行うことで，それぞれの処理を独立させ，コードの均質化を図ることができ，タスクの振り分けやコードリーディングがしやすくなる．\\
+　しかし，MVCアーキテクチャに反して内部処理をModel，Viewに記述してもフレームワーク側が柔軟に対応してしまい，仕様通りの挙動ができてしまうことがある．そのため，プログラマによって記述する場所が異なり，特に納期が短い中でシステム開発を行うと，コードに統一性が出てこなくなってしまうことが多い．\\
+\section{モデルからのコード生成}
+
+\subsection{モデル駆動型アーキテクチャ}
+本研究の先行的な考え方として，2001年にObject Management Groupが発表した，モデル駆動型アーキテクチャ(MDA)\cite{mda}というものがある．モデル駆動型アーキテクチャとは，モデルはソフトウェアの開発と保守を行うための優れた基盤であるとし，UMLといったモデリング言語を発展させるために考えられたものであり，さまざまな抽象化レベルでモデルを作成し，それらのモデルを繋ぎあわせて実装するという考え方である．このモデル駆動型アーキテクチャは，実装技術に依存しない標準仕様であるPIM(Platform Independent Model:プラットフォーム独立モデル)を策定し，そこから各プラットフォームに依存した形式であるPSM(Platform Specific Model:プラットフォーム依存モデル)に変換することで，様々な実装技術に対応でき，月日が経過して実装技術が変化しても開発資産の経年劣化を防ぐことができる\cite{mda2}．
+
+\subsection{Executable UML}
+本研究の先行研究としては，Sally Shlaer，Stephen J. Mellorらが提唱したExecutable UML(xUML)\cite{exec}というものがある．Executableとは「実行可能な」という意味を表しており，UMLを拡張することで，確実に実装のできるコードを記述できるモデルを作成できるようすることである．このExecutable UMLを導入することで，1つの問題領域の完全なモデルを構築できるようになるとのことである．\\
+\\
+　これらモデル駆動型アーキテクチャやExecutable UMLの考え方を導入することにより，モデルで動作の確認を行うことができ，そのままソースコードの生成も行うことができると言われている．しかし，モデル駆動型アーキテクチャは元となるUMLといったモデルが完全に標準化を行うことができず，近年，この考えは落ち着いている．Executable UMLはMellorにより，2011年に標準化されているが，まだまだ普及しているとは言い難い．
+
+\subsection{UMLを入力とするソースコード自動生成ツールの開発}
+河村，浅見らの研究\cite{blgen}ではWebアプリケーション開発における自動生成技術の適用に対して，クラス図とシーケンス図からフレームワーク用のコードを自動生成するツールの作成に取り組んでいる．この研究で作成されたツールを適用することで，9割以上のソースコードの生成に成功している．しかし，クラス図とシーケンス図はフレームワークを扱う場合，ある程度そのフレームワークを使ってのシステム開発の経験が無いとどう作成すればよいのかわからないことがある．
+
+\subsection{モデル変換に基づくエンドユーザ主導のWebアプリケーション開発技法}
+八木，中所らの研究\cite {endu}ではエンドユーザが主導して，Webアプリケーションを開発するために3つの自動生成ツールを作成している．3つのツールを順に扱っていくことで，Webアプリケーションモデルから実際に稼働するWebアプリケーションへの自動生成を行えるとのことである．その3つのツールを適用することでシステム開発経験の浅いエンドユーザでも直感的に開発が行えるようにしている．この研究ではこのツールを使って汎用プログラミング言語を用いるよりも，容易にWebアプリケーションを作成することに成功している．
+
+\section{コード生成ツール}
+以下に関連する製品や，ソフトウェアを示す．
+
+\subsection{Web Performer}
+本研究の関連製品としては，キヤノンソフトウェア株式会社が作成した，「Web Performer」\cite {webp}が存在する．この製品はGUI操作で要件定義情報から業務用のWebアプリケーションを100％自動生成できるツールであるとのことである．しかし，こちらは1ヶ月弱の学習期間が必要であり，また製品の値段が300万円以上するとのことなので，小さなシステム開発会社にとっては敷居が高くなってしまう．
+
+\subsection{その他関連するツール}
+その他の関連するツールとしては，株式会社ジャスミンソフトが販売している「Wagby」\cite {wagby}，南米ウルグアイのArtech社が開発した「GeneXus」\cite {gene}，オープンソースソフトウェアである「blanco Framework」\cite {blanco}等が挙げられる．\\\\
+　いずれのツールも自動生成率は高く，Webアプリケーションの開発に適用することで機敏にシステム開発を進めることができると思われる．しかし，設計段階で必要となるモデルを細かく作成しなければならなく，学習期間も長くなってしまうツールが多く，これらのツールの導入に手間取ってしまうかもしれない．
+
+
+%--------------------------------------------------------------------
+\chapter{アプローチ}
+本研究では，既存のツールと比較して，生成できるソースコードの量は少ないが，必要とするモデルを簡単にし，少ない手順で，CakePHPのアーキテクチャにしっかりと則った形でコードの自動生成を行うことで，コードに統一性を出し，導入をしやすくするツールの作成を目指す．本研究で扱うモデルは画面遷移図とER図である．これらのモデルを入力として，CakePHPのコードを生成する．\\
+　なお，今回はレイアウトに関する部分は考慮せず，主にシステムの機能的な部分の自動生成を行う．
+
+\section{ツール構成図}
+ツールはJavaを使って作成する．画面遷移図とER図はUMLを中心としたモデリングを行うことのできるツールastah*\cite{astah}を使って作成する．そしてastah*のXML出力機能を利用してXMLファイルを生成し，そのXMLファイルを解析することで作成した画面遷移図とER図のXMLファイルから文字列を抽出し，抽出した文字列からディレクトリやファイルを生成し，そのファイルにCakePHP用のコードを記述する．図3.1に本ツールの構成図を示す．
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[width=7cm]{tool.eps}
+\caption{ツールの構成図}
+\end{center}
+\end{figure}
+
+\section{画面遷移図とER図}
+本研究ではモデルとして画面遷移図とER図を扱う．\\　画面遷移図とは画面の設計を行う際に作成されるものであり，各画面の機能や画面の名前，ボタン押したときや処理を行った際にどの画面に遷移するかが記述されている．\\
+　一方，ER図は和名では実体関連図と呼ばれている．システムのデータを図に表すことで，データベースを抽象的に示したものである．本研究で扱うデータベースは第3正規形であり，ER図はIDEF1X表記のものを取り扱っていく．また，テーブル名や外部キーは実際にデータベースに登録する際の名称をそのままER図に記述する．この名称はCakePHPの命名規約に従って，テーブル名は単数形で記述をし，外部キーは，「元となるテーブル名の単数形」+「\_id」と記述するものとする．\\%ログイン機能を導入したい場合は，対象となるテーブルに「username」と，「password」というカラムを作成し，名前とパスワードを入力できるようにしておく．\\ 
+　画面遷移図とER図はいずれもWebアプリケーションを開発する際に作成されることが多く，理解もしやすい．また，フレームワークを扱った経験が無くともある程度のデータベースとモデリングの知識があれば，作成が可能である．\\　本研究ではこれらのモデリングツールとして，UMLを中心としたモデリングを行うことのできるastah*を扱う．画面遷移図はastah*のステートマシン図作成ツールを使い，ER図はastah*のER図作成ツールを用いる．このastah*で作成した画面遷移図とER図のファイルを解析することでコードの自動生成を試みる．
+
+\section{生成手順}
+本研究では上記で述べたとおり，画面遷移図とER図からCakePHPのソースコードを半自動で生成する．図3.2は第4章のコード生成実験で扱う面談予約管理システムのER図の一部である．
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=7cm]{partofermodel.eps}
+\caption{ER図の一部}
+\end{center}
+\end{figure}
+\\
+　図3.2では各テーブルの名前とカラム名が記述されており，usersテーブルとappointmentsテーブルが1対0以上の関係で表されている．主としてModel部分のコード生成のために，このようなER図の各テーブル名やリレーションシップを参照する．Modelに対するバリデーションに関しては，そのカラムがnot nullかどうか判別し，空の内容を許可するかしないかを生成する．バリデーションとは，例えばデータの追加を行う際に，入力フォームにデータを入力するが，その入力されたものがありえないもの，ルールに従わないものだった場合に弾いてエラーメッセージを表示できるようにするものである．\\
+　続いては，画面遷移図よりControllerとViewを生成していく．図3.3に第4章のコード生成実験で扱う面談予約管理システムの画面遷移図の一部示す．
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=9cm]{gamenzenizu.eps}
+\caption{画面遷移図の一部}
+\end{center}
+\end{figure}
+\\
+　図3.3では面談タイトル一覧表示画面で面談タイトル追加ボタンを押すと面談タイトル追加画面へと遷移することが示されている．図3.3で示されているように，このままでは各画面がER図のどのテーブルに値するのかが不明確なため，各画面のプロパティビューに予めテーブル名を記述しておく．図3.4にプロパティビューの例を示しておく．
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=7cm]{property.eps}
+\caption{プロパティビューの例}
+\end{center}
+\end{figure}
+\\
+　画面遷移図からは，各画面の名前や処理を行った際の画面の遷移先を参照する．
+
+\section{生成されるもの}
+上記で述べた生成手順を踏むことで，ER図のテーブル名からは，各Modelのファイルが生成される．そのファイルにクラス名やメソッド名を記述し，バリデーションやアソシエーション等が記述される．アソシエーションとは，リレーショナルデータベースにおけるリレーションシップにあたるものであり，どのModelと何対何で繋がっているかを示すものである．\\
+　また，画面遷移図からは各View，Controllerのファイルが生成され，そのファイルの中に各機能の処理や画面を表示するためのコードが記述される．具体的な例としては，図3.5のように，画面の名前に「追加」とあったらViewに追加画面を表示するためのaddファイルを生成し，そこに入力フォームを表示して，ボタンが押されたらPOST送信を行うように記述する．また，Controllerにもaddメソッドを記述し，ViewからPOST送信された内容を，対応するテーブルにデータを追加する処理を記述する．
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=11cm]{add.eps}
+\caption{追加機能の生成の例}
+\end{center}
+\end{figure}
+\\
+　また，ER図からも情報を読み込み，カラム数やデータの型の判別を行う．このようにER図からも情報を読み込むことで，入力フォームをいくつ生成すればよいのか，どのような入力フォームを生成すればよいのかを判別する．具体的にはデータの型がDATE，あるいはDATETIMEだった場合は，図3.8のように，入力フォームはプルダウン形式で年月日を選択できるように自動生成を行う．データの型がそれ以外だった場合は，テキスト入力フォームを生成し，そこに記述を行えるようにする．また，図3.7のように，外部キーが存在した場合は，元となるModelと何対何の関係かを判別し，1対1，あるいは多対1だった場合はラジオボタンで選択できるようにし，1対多，多対多の場合はチェックボックス形式で複数選択できるように自動生成を行う．
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=15cm]{form.eps}
+\caption{フォーム生成の例}
+\end{center}
+\end{figure}
+　追加機能以外にも，画面遷移図に「削除」とあった場合，Controllerにdeleteメソッドを記述し，テーブルから該当データを削除する機能を搭載する．他にも画面の名前に「一覧」と記述してあった場合はテーブルの全てのデータを一覧で表示する，「編集」と記述してあった場合は該当レコードを編集できる機能を搭載する，といったように，画面遷移図から文字列を読み取ることで，各機能を搭載する．様々なシステム開発で作成された画面遷移図を参照していくことで，どの文字列を抽出したらどの機能のソースコードを記述するのかを決定していく．現時点ではWebアプリケーションの基本的な機能である「追加」,「削除」,「編集」,「一覧表示」，「履歴表示」，「詳細表示」，「ログイン」といった機能の自動生成を行う．\\
+　ソースコードを生成する際に，コメントも生成する．具体的には，例えばCakePHPの各命名規則に従ってソースコードが生成されたときは，そのすぐ下にコメントとして，その命名規則についての説明が軽く生成される．また，各種ヘルパーやコンポーネントを使った場合は，そのヘルパーやコンポーネント名を生成する．こうすることで，そのコードが何を表しているのかがわからない場合に，その名前ですぐに調べることができる．ヘルパーやコンポーネントはプログラマが加筆修正を行う可能性が高いと思われる場所には，そのことのコメントも生成する．他にも，ControllerがModelやViewに値を受け取ったり渡したりするコードが生成された場合は，そのことをコメントで示す．\\
+　コメントの種類としては，CakePHP独自のコードの説明，Webアプリケーションの基本的な説明，プログラマが加筆修正を行いそうな部分にそのことを示す説明，条件分岐についての説明の4種類に分けられる．CakePHP独自のコードの説明としては，HtmlHelperや，SessionComponent等を使った時に，それらを使用したということを示したり，Modelからのデータの取得や，Viewに値をセットすることを示したりを生成する．Webアプリケーションの基本的な説明としては，画面遷移することを示したり，POST送信やGET送信をすることを示したりを生成する．プログラマが加筆修正を行いそうな部分にそのことを示す説明としては，コードの記述例を生成し，その下にどう加筆修正をすればよいのかについての説明を生成する．条件分岐の説明としては，主にif文で何を条件として分岐するかについてが生成される．実際に生成されるコメントについては，第4章で述べていく．
+
+\section{本ツールのソースコード}
+付録その1に，Javaで記述された本ツールのソースコードを掲載しておく．表3.1にあるのは本ツールのソースコードリストである．
+\begin{table}[htb]
+  \begin{center}
+    \caption{本ツールのソースコードリスト}
+    \begin{tabular}{|c|c|} \hline
+      ソースコード1 & CreateCode.java\\ \hline
+      ソースコード2 & LoadER.java\\ \hline
+      ソースコード3 & LoadScreen.java \\ \hline
+      ソースコード4 & CreateDirectory.java \\ \hline
+      ソースコード5 & CreateFile.java \\ \hline
+      ソースコード6 & EditChar.java \\ \hline
+      ソースコード7 & WriteController.java \\ \hline
+      ソースコード8 & WriteView.java \\ \hline
+      ソースコード9 & WriteModel.java \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}\\
+　CreateCodeは本ツールのメインクラスであり，ここで他のクラスの呼び出しを行っている．LoadERは，ER図のXML読み込み用クラスであり，ここでER図を読み込み，配列へと格納し，読み込んだデータをメインクラスへと送っている．LoadScreenは画面遷移図のXML読み込み用クラスであり，ER図と同様に，配列へと格納してメインクラスへとデータを送っている．CreateDirectoryとCreateViewは，それぞれフォルダとファイル生成用クラスであり，メインクラスから受け取った名前でフォルダやファイルの生成を行っている．EditCharは文字列操作用クラスであり，文字列を受け取ったら最初の文字を大文字にしたり，文字列の一部分を抽出したりを行って，文字列を返す．WriteControler，WriteView，WriteModelはそれぞれCakePHPのModel，View，Controllerのソースコードを生成するクラスであり，ここでメインクラスからデータを受け取り，CreateFileで生成されたファイルにソースコードの記述を行う．本ツールのクラス図は，図3.7に示しておく．
+\begin{figure*}[h]
+\begin{center}
+\includegraphics[width=18cm,angle=270]{classdiagram.eps}
+\caption{本ツールのクラス図}
+\end{center}
+\end{figure*}
+\\
+
+%--------------------------------------------------------------------
+\chapter{コード生成実験}
+本研究では本ツールの有用性を示すために面談予約管理システムの作成を行う．
+
+\section{実験題材}
+面談予約管理システムとは，学生が教員に面談を予約するときに利用するものであり，教員は面談候補日の登録，削除，編集，一覧表示機能，面談タイトルの登録，削除，一覧表示機能，面談情報の登録，削除，編集，一覧表示，全削除機能といった機能を利用することができる．学生はこの機能の一部を利用することができ，面談情報の登録，削除，編集機能を利用することができる．他にも，ログイン機能や過去に行われた面談の一覧表示といった機能もある．\\
+　この面談予約管理システムの画面遷移図は，図4.1に示されている．
+\begin{figure*}[htpb]
+\begin{center}
+\includegraphics[width=22cm,angle=270]{gamen.eps}
+\caption{面談予約管理システム用画面遷移図}
+\end{center}
+\end{figure*}
+\\
+　図4.1の画面遷移図には画面数が17個存在している．認証画面でログインをすることで，各種画面の機能を利用することができ，各一覧表示画面から，「追加」，「削除」，「編集」といった画面に遷移できることがわかる．\\
+　面談予約管理システムのER図は図5.1で示されている．
+\begin{figure*}[h]
+\begin{center}
+\includegraphics[width=13cm]{er.eps}
+\caption{面談予約管理システム用ER図}
+\end{center}
+\end{figure*}
+\\
+　図5.1のER図ではテーブル数は4個存在し，各テーブル間の対応関係や，カラム名が記述されている．appointmentsテーブルと，usersテーブルが多対1の関係で示されており，appointmentsテーブルにusersテーブルの外部キーとして，user\_idというカラムが存在していることがわかる．appointmentsテーブルは他にもcandidatesテーブルと多対1の関係があり，canditatesテーブルと1対多の関係があるtitlesテーブルの外部キーも持っていることがわかる．
+
+
+\section{実験の手順と制約}
+本研究では画面遷移図とER図を作成し，そこから本ツールを適用して，CakePHPのソースコードを生成することでこの面談予約管理システムの作成を試みる．そして，複数の学生たちによって本ツールを使わずに作成された同様の機能を持つ面談予約管理システムのソースコードと比較することで，本ツールの有用性を確かめる．なお，この学生たちはプログラミングの経験はあるが，CakePHPを使ってのシステム開発は初めての人たちである．また，レイアウトに関する部分は考慮しないものとする．
+
+\section{実験結果}
+面談予約管理システムの画面遷移図とER図に本ツールを適用した結果，表4.1に示されているファイルができた．
+\begin{table}[h]
+  \begin{center}
+    \caption{生成されたファイル一覧}
+    \begin{tabular}{|c|c|c|} \hline
+      Model & Controller & View \\ \hline \hline
+       & & add.ctp \\
+       & & delete\_all.ctp \\
+       & & delete.ctp\\
+       Appointment.php & AppointmentsController.php & edit.ctp \\
+       & & history.ctp \\
+       & & index.ctp \\
+       & & view.ctp \\ \hline
+       & & add.ctp \\
+       & & delete.ctp\\
+       Candidate.php & CandidatesController.php & edit.ctp \\
+       & & index.ctp \\ \hline
+       & & add.ctp \\
+       Title.php & TitlesController.php & delete.ctp \\
+       & & index.ctp \\ \hline
+       & & add.ctp \\
+       User.php & UsersController.php & edit.ctp \\
+       & & login.ctp \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}\\
+
+　学生たちが作成したファイルと同じものが全て生成されていた．ModelとControllerはER図のテーブル数と対応し，それぞれ4つのファイルが生成された．Viewは画面遷移図の画面数と対応し，17個のファイルが生成された．生成されたファイルには，例えば4.1，4.2のようなソースコードが記述されていた．\\
+\begin{lstlisting}[caption=add.ctp,label=1]
+<div class="candidates form">
+<?php echo $this->Form->create('Candidate'); ?>
+<?php //Formヘルパーを使用 ?>
+	<fieldset>
+		<legend>追加画面</legend>
+	<?php
+		echo $this->Form->input('datetime', 
+			array(
+				'label' => 'datetime',
+				'dateFormat' => 'YMD',
+				'timeFormat' => '24',
+				'monthNames' => false,
+				'separator' => '/',
+			));
+		echo $this->Form->input('title_id', 
+			array(
+				'type' => 'radio',
+				'value' => 1,
+				'options' => $radio1,
+			));
+		//入力フォームを表示
+	?>
+	</fieldset>
+<?php echo $this->Form->end('送信'); ?>
+<?php //フォームの内容をPOST送信する ?>
+</div>
+
+<div class="actions">
+	<h3>画面</h3>
+	<ul>
+		<li><?php echo $this->Html->link('index', array('action' => 'index')); ?></li>
+	</ul>
+</div>
+
+\end{lstlisting}
+　ソースコード4.1のadd.ctpは面談候補日の追加を行うときに表示されるCandidatesのViewファイルである．CakePHPに用意されているFormヘルパーを利用し，入力フォームの生成を行っている．datetimeというカラムは，型がDATETIMEになっているため，入力フォームはプルダウン形式で年月日を選択できるように生成されている．title\_idは外部キーであり，candidatesテーブルがtitlesテーブルと多対1の関係があるため，ラジオボタン形式で面談タイトルを選択できるように生成されている．\\
+
+\begin{lstlisting}[caption=AppointmentsController.php,label=1]
+<?php
+class AppointmentsController extends AppController {
+	public $name = 'Appointments';
+
+	public $uses = array(
+		'Appointment' 
+		, 'User'
+		, 'Candidate'
+		, 'Title'
+	);
+	//使用するモデル名を列挙
+
+	public $components = array('Auth');
+	//AuthComponentを使用
+
+	public function beforeFilter(){
+		$this->Auth->authError='ログインが必要です';
+		$this->Auth->allow('add');
+		//ここで認証なしでも表示できる画面(メソッド名)を記述
+	}
+
+	public function add() {
+		$radio1 = $this->User->find('list', array('fields' => array('id', 'name')));
+		//ラジオボタン用にUserの値を取得
+		$this->set('radio1', $radio1);
+		//ビューに値をセット
+		$radio2 = $this->Candidate->find('list', array('fields' => array('id', 'datetime')));
+		//ラジオボタン用にCandidateの値を取得
+		$this->set('radio2', $radio2);
+		//ビューに値をセット
+		$radio3 = $this->Title->find('list', array('fields' => array('id', 'title')));
+		//ラジオボタン用にTitleの値を取得
+		$this->set('radio3', $radio3);
+		//ビューに値をセット
+		if ($this->request->is('post')) {
+		//POST送信されたら
+			$this->Appointment->create();
+			if ($this->Appointment->save($this->request->data)) {
+			//送信されたデータがテーブルに保存されたら
+				$this->Session->setFlash('保存しました。');
+				//SessionComponentを使用
+				$this->redirect(array('action' => 'index'));
+				//indexに遷移する
+			} else {
+				$this->Session->setFlash('保存できませんでした。');
+				//SessionComponentを使用
+			}
+		}
+	}
+
+	public function index() {
+		$this->Appointment->recursive = 0;
+		$this->set('appointments', $this->paginate());
+		//Paginationを利用
+		$appointments= $this->Appointment->find('all');
+		//findメソッド（テーブルの中身を全て取得する）
+		$this->set('appointments', $appointments);
+		//ビューに値をセット
+	}
+
+	public function delete_all() {
+		if($this->request->is('post','delete_all')) {
+		//POST送信かつdelete_allされたら
+			if ($this->Appointment->query('TRUNCATE appointments;')) {
+			//テーブルの全レコードを削除
+				$this->Session->setFlash('appointmentsテーブルの全レコードを削除しました。');
+			//SessionComponentを使用
+				$this->redirect(array('action' => 'index'));
+				//indexに遷移する
+			}
+			$this->Session->setFlash('全削除できませんでした。。');
+			//SessionComponentを使用
+			$this->redirect(array('action' => 'index'));
+			//indexに遷移する
+		}
+	}
+
+	public function edit($id = null) {
+		$radio1 = $this->User->find('list', array('fields' => array('id', 'name')));
+		//ラジオボタン用にUserの値を取得
+		$this->set('radio1', $radio1);
+		//ビューに値をセット
+		$radio2 = $this->Candidate->find('list', array('fields' => array('id', 'datetime')));
+		//ラジオボタン用にCandidateの値を取得
+		$this->set('radio2', $radio2);
+		//ビューに値をセット
+		$radio3 = $this->Title->find('list', array('fields' => array('id', 'title')));
+		//ラジオボタン用にTitleの値を取得
+		$this->set('radio3', $radio3);
+		//ビューに値をセット
+		$this->Appointment->id = $id;
+		if (!$this->Appointment->exists()) {
+		//そのidが存在しなかった場合
+			throw new NotFoundException('不正なidです。');
+		}
+		if ($this->request->is('post') || $this->request->is('put')) {
+		//post、あるいはputが実行されたら
+			if ($this->Appointment->save($this->request->data)) {
+			//送信されたデータがテーブルに保存されたら
+				$this->Session->setFlash('変更しました。');
+				//SessionComponentを使用
+				$this->redirect(array('action' => 'index'));
+				//indexに遷移する
+			}
+			else {
+				$this->Session->setFlash('変更できませんでした。');
+				//SessionComponentを使用
+			}
+		}
+		else {
+			$options = array('conditions' => array('Appointment.' . $this->Appointment->primaryKey => $id));
+			$this->request->data = $this->Appointment->find('first', $options);
+		}
+	}
+
+	public function view($id = null) {
+		if (!$this->Appointment->exists($id)) {
+		//そのidが存在しなかった場合
+			throw new NotFoundException('不正なidです。');
+		}
+		$options = array('conditions' => array('Appointment.' . $this->Appointment->primaryKey => $id));
+		$this->set('appointments', $this->Appointment->find('first', $options));
+		//ビューに値をセット
+	}
+
+	public function delete($id = null) {
+		$this->Appointment->id = $id;
+		if (!$this->Appointment->exists()) {
+		//そのidが存在しなかった場合
+			throw new NotFoundException('不正なidです。');
+		}
+		$this->request->onlyAllow('post', 'delete');
+		//post送信かつdeleteのときのみ実行を許可する
+		if ($this->Appointment->delete()) {
+			//データが削除できたら
+			$this->Session->setFlash('削除しました。');
+			//SessionComponentを使用
+			$this->redirect(array('action' => 'index'));
+			//indexに遷移する
+		}
+		else {
+			$this->Session->setFlash('削除できませんでした。');
+			//SessionComponentを使用
+			$this->redirect(array('action' => 'index'));
+			//indexに遷移する
+		}
+	}
+
+	public function history() {
+		$this->Appointment->recursive = 0;
+		$this->set('appointments', $this->paginate());
+		//Paginationを利用
+		$appointments= $this->Appointment->find('all');
+		//findメソッド（テーブルの中身を全て取得する）
+		$this->set('appointments', $appointments);
+		//ビューに値をセット
+	}
+
+}
+?>
+
+\end{lstlisting}
+　ソースコード4.2は，面談情報の追加や一覧表示，全削除，編集，詳細，削除，履歴表示機能の内部処理を行っているAppointmentsControllerである．最初に使用するModel名が列挙され，ログイン周りの機能のことが生成されている．各メソッドではViewやModelと連携し，各ModelやViewに値を渡したり，受け取ったりをして，データのやりとりを行えるように生成されていることがわかる．生成されたコメントに関しては，CakePHP独自のコードについての説明は，AuthComponentやSessionComponentを使用したことや，モデルから値を取得し，ビューに値をセットするといったことが生成されていることがわかる．なお，MVCアーキテクチャのViewと，詳細画面についてのviewとの混乱を避けるために，Model，View，Controllerはそれぞれモデル，ビュー，コントローラーと全て片仮名表記で統一している．Webアプリケーションの基本的な説明はラジオボタンやPOST送信といった用語や，画面遷移が行われるといったコメントが生成されている．プログラマが加筆修正を行いそうな部分にそのことを示す説明は，AuthComponentを利用するときに，19行目に「ここに認証なしでも表示できる画面(メソッド名)を記述」といったようなことが書かれている．条件分岐についての説明は，if文で条件分岐を行う条件についてが説明されている．\\
+　学生たちが作成したものと比較すると，画面遷移図を参照していたため，全てのファイルの自動生成が行えていた．ソースコードの行数に関しては，学生たちは1043行，本ツールでは970行記述されていた．そのうちコメントは，学生たちが40行，本ツールでは145行存在していた．
+
+%--------------------------------------------------------------------
+\chapter{評価}
+評価では，学生たちが記述したコードやbake，Scaffoldingとの比較を行い，本ツールの有用性を確かめる．
+
+\section{学生たちが記述したコードとの比較}
+学生たちが記述したソースコードと比較すると，生成できたソースコードは80％程であり，フレームワークを使用する際にありがちな冗長な部分を生成することができていた．具体的には，Controlllerでは，各クラスやメソッド名の記述や，データベースからのデータの取得や，ViewやModelへのデータの受け渡しや，POST送信の処理や，データを追加，変更，削除を行った際に，成功した場合の処理と失敗した場合の処理の条件分岐といったことが生成されていた．ViewやModelでも，Viewでは，HTMLの各タグや，入力フォームの生成，データの表示，Modelでは，各Model名やModelの連結，バリデーションといった，複数箇所に渡って記載されることの多い部分が全て自動生成されていた．そのため，コーディング作業は大幅に効率化できると思われる．また，変数の宣言の仕方やデータの取得の仕方等に統一性が生まれており，CakePHPに関するコメントも充実していたので，可読性が高く，容易に改変ができ，CakePHPを初めて扱う人でもソースコードが理解しやすいと思われる．他にも学生たちが記述したソースコードは，インデントがうまく整えられておらず，アルゴリズムが微妙に異なる部分もあったが，本ツールで作成されたソースコードはインデントが全て統一されており，一定の規則でコードが記述されていたのでコードの均質化が行われていた．他にもMVCそれぞれに独立した処理を記述することができたため，ここからタスクの振り分けを行いたい場合でも，振り分けがしやすくなると思われる．\\
+　今回は機能面では全ての機能を生成することができたが，完全に仕様通りの自動生成を行えたわけではなかった．ログイン機能においては，本来なら教員がログインしたときと，学生がログインしたときでは，表示できる画面が異なるが，教員がログインしたときのみの機能しか生成されなかった．面談情報の一覧表示機能では，本来なら今日以降の面談情報のみを表示する仕様となっているが，テーブルの中身を全て参照してしまい，過去に行われた面談情報も全て表示されてしまっていた．面談情報の追加機能では最初に面談タイトルを選択すると，その面談タイトルに紐付けされた日付が表示され，面談情報を登録する際にその日付を選択する形式となっているが，その機能を生成することができず，全ての日付が表示され，選択できるような形で生成されてしまっていた．\\
+　他にも一部のバリデーションが生成されず，例えばユーザの追加を行う際に，パスワードを入力するが，そのパスワードの長さは8文字以上でなければ弾く仕様となっていたが，そのバリデーションを自動生成することができなかった．\\
+　実装が不十分だった部分もあり，認証画面でログインが成功した場合，面談予約一覧表示画面へと遷移するが，その遷移がうまく行えていなかった．このことに関しては，実装を進めることで対応可能だと思われる．
+
+\section{bake，Scaffoldingとの比較}
+CakePHPに予め用意されているbakeとScaffoldingで生成されるソースコードとの比較も行った．bakeとは，CakePHPの基本的な機能をコマンドライン上で生成できるツールである．bakeを起動すると，どのデータベースを扱うのか，どのModel，View，Controllerを生成するのか等を1つ1つ尋ねられるので，それに1つ1つ答えていくことでコードの自動生成が可能である．図5.1にbakeを実行しているときの画面を示す．
+\begin{figure}[h!]
+\begin{center}
+\fbox{
+\includegraphics[width=9cm]{bake.eps}
+}
+\caption{bakeの実行画面}
+\end{center}
+\end{figure}
+\\
+bakeで生成できる機能は，「追加」,「削除」,「編集」,「一覧表示」，「詳細表示」の5つの機能である．Scaffoldingはデータベースを用意し，コントローラーに\$scaffoldと記述するだけで自動的に「追加」,「削除」,「編集」,「一覧表示」，「詳細表示」の5つの機能が利用できるようになるものである．\\
+　bakeやScaffoldingとの比較は表5.1で示す．
+\begin{table}[h!]
+\begin{center}
+\caption{本ツールとbakeとScaffoldingと学生のコードの比較}
+\includegraphics[width=13cm]{comparetable.eps}
+\end{center}
+\end{table}
+\\
+　Modelの自動生成に関しては，本ツールではER図を参照しているため，それに応じた形で自動生成を行うが，bakeは決め打ちでしか生成できなかった．ViewとControllerも同様に，本ツールでは画面遷移図を参照していたため，それに応じた形で自動的に機能の生成を行うが，bakeでは決め打ちでしか生成できなかった．\\
+　生成されるソースコードに関しては，本ツールがbakeより多かった．機能面で見ると，bakeは面談予約管理システムの一部の機能しか作成することができず，ログイン機能や履歴表示機能，全削除機能といった機能を生成することができなかった．生成されるバリデーションに関しては，bakeは全てのカラムに対し，バリデーションをコメントとして記述し，必要に応じてそのコメントをプログラマが修正することで，バリデーションを行える形式になっていた．コメントで記述されたバリデーションはエラーメッセージの記述の仕方やallowEmptyかどうか，requiredかどうか等が記述されていた．コマンドライン上で1つのカラムに対し，1回1回バリデーションを設定することもできるが，実際にコーディングを行う作業より，若干速くなる程度のものであると思われる．本ツールでは，ER図を参照していたため，空の値を許さない場合はコメントアウトせずにnotEmptyが記述され，型がdateやdatetimeだった場合，ありえない日時を弾くようにバリデーションが記述されていた．そのため，ER図を参照している本ツールのほうが，柔軟にバリデーションの自動生成を行うことができていた．バリデーションだけでなく，Model同士の連結もbakeでは，1つ1つのModelに対し，どのModelと繋がっているのかを答えていなかければならなかった．本ツールではER図のリレーションシップを参照しているため，すぐに自動生成を行える．これらの機能やバリデーションといったものは，まだ一部のものしか自動生成を行えるように実装を行っていないため，今後様々なシステムの画面遷移図やER図やソースコードを参照し，ツールの性能を向上させていくことで，本ツールのほうがより柔軟に，多機能の自動生成を行えるようになっていくと思われる．なお，Scaffoldingは機能が使えるようになるだけであり，ソースコードの生成を自動で行うものではないので，ここからシステム開発を行うことはあまりないと思われる．\\
+　コメントに関しては，本ツールとbakeでは両方ともコメントの生成を行うが，中身は大きく異なることが判明した．bakeで生成されたコメントは上記で述べたModelのバリデーション以外では，Controllerにソースコード5.1のようなものが生成された．ソースコード5.1はbakeで生成されたAppointmentsControllerのeditメソッドである．\\
+\begin{lstlisting}[caption=AppointmentsController.phpの一部,label=1]
+/**
+ * edit method
+ *
+ * @throws NotFoundException
+ * @param string $id
+ * @return void
+ */
+	public function edit($id = null) {
+		if (!$this->Appointment->exists($id)) {
+			throw new NotFoundException(__('Invalid appointment'));
+		}
+		if ($this->request->is(array('post', 'put'))) {
+			if ($this->Appointment->save($this->request->data)) {
+				$this->Session->setFlash(__('The appointment has been saved.'));
+				return $this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash(__('The appointment could not be saved. Please, try again.'));
+			}
+		} else {
+			$options = array('conditions' => array('Appointment.' . $this->Appointment->primaryKey => $id));
+			$this->request->data = $this->Appointment->find('first', $options);
+		}
+		$users = $this->Appointment->User->find('list');
+		$candidates = $this->Appointment->Candidate->find('list');
+		$titles = $this->Appointment->Title->find('list');
+		$this->set(compact('users', 'candidates', 'titles'));
+	}
+\end{lstlisting}
+　4行目に記述されているNotFoundExceptionは404 Not Found エラーを表示させるという意味であり，ソースコード5.1のコメントにはidが見つからなかった場合は404エラーを出し，idのパラメータはstring型であり，返り値はないといったことが，editメソッドの上部に記述されていた．一方，本ツールで生成されたコメントは第4章のソースコード4.2で示されている通り，各行ごとにそのコードが何を示しているのかが記述されていた．\\
+　実施容易性に関しては，本ツールは画面遷移図の各画面に対応するテーブル名を記述するだけですぐにコードの自動生成が行えるが，bakeはコマンドラインの設定を行い，どの部分を生成するのかを答えていかなければならない．bakeではオプションで5つの機能を一括で生成することも可能だが，そのようなことをすると必要のない機能まで生成されてしまうことがある．本ツールでは画面遷移図に応じて必要な機能のみを生成し，不要な機能の生成は行わない．\\
+　以上のことから，本ツールは他の自動生成ツールや学生が記述したコードと比べると，有用性が高いと思われる．bakeやScaffolding等と比較すると，ER図や画面遷移図を作らなければならない手間がかかるが，これらのモデルはWebアプリケーションの作成を行う際にはほぼ必須なものである．単独で小さなWebアプリケーションの開発を行う際はbakeやScaffoldingのほうが有用性が高いかもしれないが，システムの規模が大きくなるほど可視化のためや意識共有のためにモデルが作成されるため，そこから簡単にコード生成を行ってくれる本ツールの有用性が高くなっていくと思われる．
+
+\chapter{考察}
+コード生成実験の結果を踏まえた考察を，本章で述べる．
+
+\section{入力モデルとコード生成率}
+今回は機能的な面で見ると，面談予約管理システム全体の自動生成が行えた．しかし，簡単な処理でも自動生成できなかった部分が多々あり，そういったものは画面遷移図やER図からでは読み取れないものであった．今回は，作成するモデルを簡単なものにすることで，雛形を生成し，機敏に開発できるように支援を行うツールであっため，これらの細かな処理はプログラマに記述してもらう生成方針であったが，完全に自動生成を行えるようにしたい場合は他のモデルも参照するか，画面遷移図とER図により多くの情報を付加する必要がある．例えば，画面遷移図にユーザ権といった情報を付加し，マスターユーザは全ての画面にアクセス可，その他のユーザは許可されている画面のみにアクセス可，といったようにすれば，今回自動生成を行えなかった教員と学生のログイン周りの機能を自動生成できるのではないかと思われる．\\
+　しかし，そのようにより多くの情報を付加する，あるいは入力とするモデルを増やすとなると，最初に述べた自動生成ツールの問題点に繋がってしまうため，このような細かな処理も生成できるようにしたい場合は，どういった形で自動生成を行うのかをよく検討していく必要がある．
+
+\section{コメントの生成}
+今回はCakePHPやWebアプリケーションの開発経験が浅い人が，ソースコードを理解しやすく，簡単に学べるような方針で，コメントも生成したが，同じようなコメントが複数箇所に出てきてしまう場合があることが判明した．例えば，Controllerでは，コンポーネントを使用する際に，そのコンポーネント名を生成するが，今回の生成実験ではSessionComponentを使用したという内容が全体で22ヶ所も生成されていた．さらに，CakePHPを既に何度も扱ったことのある人にとっては至る所にあるコメントが煩わしく感じてしまう可能性もある．よって，1，2回説明したコメントは表示させないようにし，習熟度によって生成するコメントの量を調整できるようにする等，コメントについてもよく検討していく必要性が出てきた．
+
+\section{ユーザインタフェースの生成}
+今回はレイアウトに関する部分は考慮せず，機能的な部分のみの自動生成を行ったが，ワイヤーフレーム等のWebページの画面設計図を入力に加えれば，ユーザインタフェース周りの自動生成も行えそうである．ワイヤーフレームとは，Webページの大まかなコンテンツやレイアウトを示した構成図のことであり，基本的には色や細かい装飾を考えるものではなく，何をどの位置には配置するのかといったレイアウト周りの設計を行うために作成されるものである．このワイヤーフレームを作成することのできるツールは様々なものが存在しており，その中には作成したワイヤーフレームをHTMLで出力できるものも存在しているため，このHTMLファイルを解析し，入力として加えることで，レイアウト周りの自動生成も行えるのではないかと思われる．現状の画面遷移図とER図だけでも自動生成を行えるようにし，それに加えて画面設計図からも自動生成を行えるようにすれば，レイアウトに関する実装作業も大幅に短縮できるのではないかと思われる．\\
+　あるいは本ツールに様々なスタイルを用意しておき，追加，削除，編集などの画面それぞれにどのスタイルを適用するかを選んでもらうことで自動生成を行えるようにする方法も考えられる．今回開発した機能周りの自動生成のように，スタイルシートの記述例やコメントを生成することで，画面周りの開発支援も行えるのではないかと思われる．
+
+\section{他のMVCフレームワークへの対応}
+今回はCakePHPを題材としたが，他のMVCアーキテクチャを利用したフレームワークでも，画面遷移図とER図からソースコードの自動生成が行えるのではないかと思われる．今回開発したツールは表3.1のように，クラス分けがされており，WriteModel.java，WriteView.java，WriteController.javaそれぞれにCakePHPのModel，View，Controllerのソースコードを埋め込んでいるため，埋め込むソースコードを各MVCフレームワークのコードに書き換えることで，CakePHP以外にも様々なPHP，Ruby，Javaといった言語のMVCフレームワークへの対応が行えそうである．\\
+　他にも現在，Titanium Studioや，Apache Cordova(PhoneGap)といった，JavaScriptやHTML5を使ってiOSやAndroidの両アプリを作成できるハイブリッドアプリが複数登場してきている．それらにはMVCフレームワークが用意されているものもあり，上記で述べたように本研究で行ったことと同様の手順でこれらのソースコードが生成できれば，スマートフォンアプリにも対応できるのではないかと思われる．
+
+
+%--------------------------------------------------------------------
+\chapter{まとめと今後の展望}
+
+\section{まとめ}
+本研究では，Webアプリケーション開発事業で扱われているフレームワークや自動生成ツールが抱えている問題を解決するために，画面遷移図とER図からCakePHPのソースコードを自動で生成してくれるツールを開発した．本ツールを面談予約管理システムの画面遷移図とER図に適用することで，面談予約管理システム全体の8割程度の自動生成を行うことができた．フレームワークを使用する際にありがちな冗長な部分を生成できたが，いくつか課題があることも判明した．
+
+\section{今後の展望}
+今後の展望としては，CakePHPフレームワークを使用している他のWebアプリケーションに対して本ツールを適用し，生成できるソースコードを増やしていき，様々な機能を自動生成できるようにしていきたい．また，考察で出てきた課題を解決し，実システム開発で本ツールを適用することで，どの程度機敏に開発を行えるのかの検証を行いたい．さらに，他のMVCアーキテクチャを利用したフレームワークでも同様なことが行えないか，どんな画面設計図を入力とすればレイアウト周りの自動生成も容易に行えるのかの検証もしていきたい．
+
+
+%--------------------------------------------------------------------
+\chapter*{謝辞}
+本研究に対して様々な指導や的確なアドバイスをしてくださった，伊藤恵先生に深くお礼を申し上げます．また，ゼミの中で様々な助言をしてくださった，研究室のメンバー，合同ゼミで多くの指摘をしてくださった，奥野先生並びにその研究生達，南部先生並びにその研究生達，田柳先生並びにその研究生達にも心から感謝致します．また，本研究の査読を行ってくださった，日本ソフトウェア科学会の査読者の皆さんにも深くお礼を申し上げます．
+
+%--------------------------------------------------------------------
+% 参考文献
+%\begin{adjustvboxheight} % needed only when Appendix follows
+\begin{thebibliography}{99}
+\bibitem{ruby2} 清水美樹, はじめてのRuby on Rails2, 2008, 工学社
+\bibitem{agiruby} Sam Ruby, Dave Thomas, David Heinemeier Hansson, et al, 前田修吾, RailsによるアジャイルWebアプリケーション開発, 2009, オーム社
+\bibitem{cakephp} Cake Software Foundation, CakePHP, {\url{http://cakephp.org/}}, 参照(2015-1-20)
+\bibitem{cakebook} 掌田津耶乃, CakePHP2.1によるWebアプリケーション開発, 2012, 株式会社 秀和システム
+\bibitem{mda} スティーブ J.メラー, ケンドール スコット, アクセル ウール, ディルク ヴァイセ,  二上貴夫, 長瀬嘉秀, MDA Distilled:Principles of Model-Driven Architecture, MDAのエッセンス, 2004, 翔泳社
+\bibitem{mda2} 吉田裕之, 基礎からわかるMDA, 2006, 日経BP社
+\bibitem{exec} スティーブ J.メラー, マーク J.バルサー,  二上 貴夫, 長瀬嘉秀, Executable UML A Foundation for Model-Driven Architecture MDAモデル駆動型アーキテクチャの基礎, 2003, 翔泳社
+\bibitem{blgen} 河村美嗣, 浅見可津志, UMLを入力とするソースコード自動生成ツールの開発, 全国大会講演論文集 第72回平成22年(1), 一般社団法人情報処理学会, 2010, p1-337-p1-338, {\url{http://ci.nii.ac.jp/naid/110008105498}}, 参照(2015-1-20)
+\bibitem{endu} 八木紀幸, 中所武司, モデル変換に基づくエンドユーザ主導のWebアプリケーション開発技法, 情報処理学会研究報告. ソフトウェア工学研究会報告, 一般社団法人情報処理学会, 2009, no.31, p81-p86, {\url{http://ci.nii.ac.jp/naid/110007333794}}, 参照(2015-1-20)
+\bibitem{webp} キヤノンソフトウェア株式会社, Web Performer, {\url{http://www.canon-soft.co.jp/product/web_performer/}}, 参照(2015-1-20)
+\bibitem{wagby} 株式会社ジャスミンソフト, Wagby, {\url{http://wagby.com/}}, 参照(2014-12-16)
+\bibitem{gene} ジェネクサス・ジャパン株式会社, GeneXus, {\url{http://www.genexus.com/japan/genexus-japan?ja}}, 参照(2014-12-16)
+\bibitem{blanco} 伊賀敏樹, blanco Framework, {\url{http://www.igapyon.jp/blanco/blanco.ja.html}}, 参照(2014-12-16)
+\bibitem{astah} 株式会社チェンジビジョン, astah*,  {\url{http://astah.change-vision.com/ja/index.html}}, 参照(2015-1-20)
+
+\end{thebibliography}
+%\end{adjustvboxheight} % needed only when Appendix follows
+
+
+% 以降，付録(付属資料)であることを示す
+\appendix
+%\section{付録: 面談予約管理システムの画面遷移図とER図とソースコードの一部\\} 
+-----------------------------------------------
+%\chapter*{付録その1} % \chapter{}を使うと「付録A ***」となる
+
+%付録その1(プログラムのソースリストなど)を必要があれば載せる
+%---------------------
+%--------------------------------------------------------------------
+\chapter*{付録1:本ツールで開発した自動生成ツールのソースコード}
+\begin{lstlisting}[caption=CreateCode.java,label=1]
+package cakephpgenerator;
+
+
+//メインクラス
+public class CreateCode {
+public static void main(String args[]){
+String result;//結果通知用変数
+String erdata[] = new String[50];//ER図からのデータの格納用配列
+String stdata[] = new String[50];//画面遷移図からのデータの格納用配列
+String path = "/Applications/XAMPP/xamppfiles/htdocs/seminar";
+
+LoadER.getERData(erdata);//ER図の読み込み
+LoadScreen.getScreenData(stdata);//画面遷移図の読み込み
+
+for(int j=0;;j++) {
+if(erdata[j]==null) break;
+String[] table = erdata[j].split(",",0);//「,」で区切って配列として格納
+//モデルのファイルの作成
+String modelname = table[0].substring(0, table[0].length()-1);//文字列の最後の1文字を削除
+CreateFile newModelFile = new CreateFile();
+newModelFile.file = path + "/app/Model/" + modelname + ".php";
+result = newModelFile.newFile(modelname + ".php");
+System.out.println(result);
+//外部キーを持っている時
+String FK[] = new String[50];
+int k = 0;
+for(int i=0;i<table.length;i++){
+if (table[i].indexOf("_id") != -1) {//もし外部キーがあったら
+FK[k] = table[i]; 
+k++;
+}
+}
+k = 0;
+//外部キーが持たれているとき
+String FK2[] = new String[50];
+String lowermodelname = modelname.toLowerCase();
+for(int i=0;;i++){
+if(erdata[i]==null) break;
+String[] table2 = erdata[i].split(",",0);//「,」で区切って配列として格納
+for(int l=1;l<table2.length;l++){
+if(table2[l].indexOf(lowermodelname) != -1)	{
+String[] table3 = table2[l].split("&",0);
+if(table3.length==3){
+FK2[k] = table2[0] + "&" + table2[l];
+k++;
+}
+}
+}
+}
+//モデルへの書き込み
+WriteModel newtable = new WriteModel();
+newtable.modelPath = path + "/app/Model/" + modelname + ".php";
+FK = deleteNotNullForArray(FK);
+FK2 = deleteNotNullForArray(FK2);
+newtable.writeCode(modelname,FK,FK2,stdata,erdata);
+}
+
+//ビューとコントローラーの作成
+erdata = deleteNotNullForArray(erdata);
+for(int j=0;;j++) {
+if(stdata[j]==null) break;
+String[] table = stdata[j].split(",",0);
+//ビューのフォルダ生成
+CreateDirectory newViewFolder = new CreateDirectory();
+newViewFolder.directory = path + "/app/View/" + table[0];
+result = newViewFolder.newDirectory(table[0] + "フォルダ");
+System.out.println(result);
+//コントローラーのファイル生成
+CreateFile newControllerFile = new CreateFile();
+newControllerFile.file = path + "/app/Controller/" + table[0] + "Controller.php";
+result = newControllerFile.newFile(table[0] + "Controller.php");
+System.out.println(result);	
+//コントローラーへの書き込み
+for(int k = 0;;k++){
+if(erdata[k]==null) {
+System.out.println("画面遷移図のテーブル名がER図のテーブル名と一致するものがありませんでした 画面遷移図のテーブル名 =" + table[0]);
+break;
+}
+String[] ertable = erdata[k].split(",",0);
+if(ertable[0].equals(table[0])){
+WriteController newWriteController = new WriteController();
+newWriteController.controllerPath = path + "/app/Controller/" + table[0] + "Controller.php";
+//					String[] erdatas = deleteNotNullForArray(erdata);
+//					String erdatass = deleteNotNull(erdata[k]);
+newWriteController.writeCode(stdata[j], erdata[k], erdata, stdata);
+break;
+}
+}
+for(int k=1;k<table.length;k++){
+//ビューのファイルの作成
+CreateFile newViewFile = new CreateFile();
+newViewFile.file = path + "/app/View/" + table[0] + "/" + table[k] + ".ctp";
+result = newViewFile.newFile(table[k] + ".ctp");
+System.out.println(result);
+//ビューへの書き込み
+WriteView newwriteview = new WriteView();
+newwriteview.viewPath = path + "/app/View/" + table[0] + "/" + table[k] + ".ctp";
+String meth = table[k];//メソッド名
+for(int l=0;;l++){
+if(erdata[l]==null) {
+System.out.println("画面遷移図のテーブル名がER図のテーブル名と一致するものがありませんでした 画面遷移図のテーブル名 =" + table[0]);
+break;
+}
+String[] tabledata = erdata[l].split(",",0);
+if(tabledata[0].equals(table[0])) {
+//						String[] erdatas = deleteNotNullForArray(erdata);
+//						String[] tabledatass = deleteNotNullForArray(tabledata);
+newwriteview.writeCode(meth,tabledata,erdata,stdata);
+break;
+}
+}
+}
+}
+}
+
+public static String deleteNotNull(String data){
+return data.replaceAll("@notnull", "");
+}
+
+public static String[] deleteNotNullForArray(String[] data){
+for(int i = 0;;i++){
+if(data[i]==null) break;
+data[i] = deleteNotNull(data[i]);
+}
+return data;
+}
+}
+\end{lstlisting}　
+
+\begin{lstlisting}[caption=LoadER.java,label=1]
+package cakephpgenerator;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+//ER図読み込み用クラス
+public class LoadER{
+String loadm;
+
+public static void getERData(String array[]){
+//String array[] = new String[5000];//デバッグ用
+String type_ids[] = new String[5000];//データの型のidと名前を格納する配列
+String rship_ids[] = new String[5000];//多重度のidと上限、下限を格納する配列
+String notnull_ids[] = new String[500];//not_nullのidを格納する変数
+int count = 0;
+try{
+File file = new File("/Users/b1011129/資料/sample/面談予約管理システム用ER図2.xml");
+
+if (checkBeforeReadfile(file)){
+BufferedReader br = new BufferedReader(new FileReader(file));
+BufferedReader br2 = new BufferedReader(new FileReader(file));//データの型取得用
+BufferedReader br3 = new BufferedReader(new FileReader(file));//多重度の取得用
+BufferedReader br4 = new BufferedReader(new FileReader(file));
+
+String str;
+int i = 0; //配列用変数
+int j = 0;
+
+
+rship_ids = getXMLData(br3, count);
+count++;
+br3.close();
+type_ids = getXMLData(br2, count);
+br2.close();
+count++;
+notnull_ids = getXMLData(br4, count);
+br4.close();
+while((str = br.readLine()) != null){//1行ずつ確認していく
+if(str.indexOf("<JUDE:EREntityPresentation") != -1) break;
+else if(str.indexOf("<JUDE:EREntity") != -1) {//テーブル名取得
+str = EditChar.extractChar(str, "name=\"", "\"");
+array[i] = EditChar.firstCharLerge(str);
+i++;
+}
+else if(str.indexOf("<JUDE:ERAttribute.referencedPrimaryKey>") != -1) {
+//str = "PK";
+}
+else if(str.indexOf("<JUDE:ERAttribute.referencedRelationship>") != -1) {
+//str = "";
+}
+else if(str.indexOf("<JUDE:ERAttribute.referencedForeignKeys>") != -1) {
+//str = ".FK";
+//array[i-1] += str;
+}
+else if(str.indexOf("<JUDE:ERAttribute xmi.idref") != -1) {
+//str = "";
+}
+else if(str.indexOf("<JUDE:ERAttribute") != -1) {//カラム名を取得
+array[i-1] += "," + EditChar.extractChar(str, "name=\"", "\"");
+}
+else if(str.indexOf("<UML:Classifier xmi.idref=") != -1) {//各カラムに対し、型を検索し、一致するものがあったら名前だけを入れる
+str = EditChar.extractChar(str, "xmi.idref=\"", "\"");
+for(int k = 0;;k++){
+if(type_ids[k]==null) break;
+if(type_ids[k].indexOf(str) != -1){
+String[] name = type_ids[k].split(",",0);
+array[i-1] += "&" + name[1];
+}
+}
+}
+else if(str.indexOf("<UML:Constraint xmi.idref=") != -1) {//各カラムに対し、notnullのidが存在するか確認する
+str = EditChar.extractChar(str, "xmi.idref=\"", "\"");
+for(int k = 0;;k++){
+if(notnull_ids[k]==null) break;
+if(notnull_ids[k].indexOf(str) != -1){
+array[i-1] += "@notnull";
+}
+}
+}
+else if(str.indexOf("<UML:ERAttribute xmi.idref=") != -1) {//外部キーに対し、多重度を格納する
+str = EditChar.extractChar(str, "xmi.idref=\"", "\"");
+for(int k = 0;;k++){
+if(rship_ids[k]==null) break;
+if(rship_ids[k].indexOf(str) != -1){
+String[] name = rship_ids[k].split("%",0);
+if(name[1].equals("1")&&name[2].equals("1")&&name[3].equals("1")&&name[4].equals("1")) array[i-1] += "&" + "one_to_one";
+else if(name[1].equals("0")&&name[2].equals("1")&&name[3].equals("0")&&name[4].equals("1")) array[i-1] += "&" + "one_to_one";
+else if(name[1].equals("1")&&name[2].equals("1")&&name[3].equals("0")&&name[4].equals("1")) array[i-1] += "&" + "one_to_one";
+else if(name[1].equals("0")&&name[2].equals("1")&&name[3].equals("1")&&name[4].equals("1")) array[i-1] += "&" + "one_to_one";
+else if(name[1].equals("1")&&name[2].equals("1")&&name[3].equals("1")&&name[4].equals("-1")) array[i-1] += "&" + "many_to_one";
+else if(name[1].equals("0")&&name[2].equals("1")&&name[3].equals("0")&&name[4].equals("-1")) array[i-1] += "&" + "many_to_one";
+else if(name[1].equals("1")&&name[2].equals("1")&&name[3].equals("0")&&name[4].equals("-1")) array[i-1] += "&" + "many_to_one";
+else if(name[1].equals("0")&&name[2].equals("1")&&name[3].equals("1")&&name[4].equals("-1")) array[i-1] += "&" + "many_to_one";
+else if(name[1].equals("1")&&name[2].equals("-1")&&name[3].equals("1")&&name[4].equals("1")) array[i-1] += "&" + "one_to_many";
+else if(name[1].equals("0")&&name[2].equals("-1")&&name[3].equals("0")&&name[4].equals("1")) array[i-1] += "&" + "one_to_many";
+else if(name[1].equals("1")&&name[2].equals("-1")&&name[3].equals("0")&&name[4].equals("1")) array[i-1] += "&" + "one_to_many";
+else if(name[1].equals("0")&&name[2].equals("-1")&&name[3].equals("1")&&name[4].equals("1")) array[i-1] += "&" + "one_to_many";
+else if(name[1].equals("1")&&name[2].equals("-1")&&name[3].equals("1")&&name[4].equals("-1")) array[i-1] += "&" + "many_to_many";
+else if(name[1].equals("0")&&name[2].equals("-1")&&name[3].equals("0")&&name[4].equals("-1")) array[i-1] += "&" + "many_to_many";
+else if(name[1].equals("1")&&name[2].equals("-1")&&name[3].equals("0")&&name[4].equals("-1")) array[i-1] += "&" + "many_to_many";
+else if(name[1].equals("0")&&name[2].equals("-1")&&name[3].equals("1")&&name[4].equals("-1")) array[i-1] += "&" + "many_to_many";
+}
+}
+}
+}
+
+System.out.println("ERdata------------------------------");
+for(j=0;;j++){//デバッグ用、全体
+if(array[j]==null) break;
+System.out.println(array[j]);
+}
+
+//				for(j=0;;j++){//デバッグ用、型
+//					if(type_ids[j]==null) break;
+//					System.out.println(type_ids[j]);
+//				}
+
+//				for(j=0;;j++){//デバッグ用、多重度
+//				if(rship_ids[j]==null) break;
+//				System.out.println(rship_ids[j]);
+//				}
+
+//				for(j=0;;j++){//デバッグ用、notnull
+//				if(notnull_ids[j]==null) break;
+//				System.out.println(notnull_ids[j]);
+//				}
+System.out.println("------------------------------------");
+br.close();
+}else{
+System.out.println("ファイルが見つからないか開けません");
+}
+}catch(FileNotFoundException e){
+System.out.println(e);
+}catch(IOException e){
+System.out.println(e);
+}
+}
+
+public static String[] getXMLData(BufferedReader br, int count){
+String array[] = new String[5000];
+try{
+//String rship_id;
+String str;
+//String rship_ids[] = new String[5000];//多重度のidと上限、下限を格納する配列
+String upper;//上限
+String lower;//下限
+String type_name;//型の名前格納用変数
+String notNullName;
+int i = 0;
+while((str = br.readLine()) != null){//1行ずつ確認していく
+switch(count){
+case 0://多重度のidと上限、下限を取得
+if(str.indexOf("<JUDE:ERRelationship xmi.id=") != -1){//idを取得
+str = EditChar.extractChar(str,"xmi.id=\"","\"");
+array[i] = str;
+//rship_ids[i] = rship_id;
+i++;
+}
+if(str.indexOf("<UML:MultiplicityRange xmi.id=") != -1){//上限と下限を取得
+lower = EditChar.extractChar(str,"lower=\"","\"");
+upper = EditChar.extractChar(str,"upper=\"","\"");
+array[i-1] += "%" + lower + "%" + upper;
+//rship_ids[i-1] += "%" + lower + "%" + upper;
+}
+case 1:
+if(str.indexOf("<UML:Class xmi.id=") != -1){//全てのデータの型のidと名前を探し、配列へ格納していく
+type_name = EditChar.extractChar(str, "name=\"", "\"");
+str = EditChar.extractChar(str, "xmi.id=\"", "\"");
+array[i] = str + "," + type_name;
+i++;
+}
+case 2:
+if(str.indexOf("<UML:Constraint xmi.id=") != -1){//NOT NULLかどうかを取得
+notNullName = EditChar.extractChar(str, "name=\"", "\"");
+if(notNullName.equals("NOT+NULL")){
+array[i] = EditChar.extractChar(str, "xmi.id=\"", "\" name=");
+i++;
+}
+
+}
+}
+}
+}catch(FileNotFoundException e){
+System.out.println(e);
+}catch(IOException e){
+System.out.println(e);
+}
+return array;
+}
+
+//ファイルを開く前の確認用メソッド
+private static boolean checkBeforeReadfile(File file){
+if (file.exists()){
+if (file.isFile() && file.canRead()){
+return true;
+}
+}
+
+return false;
+}
+}
+\end{lstlisting}　
+
+\begin{lstlisting}[caption=LoadScreen.java,label=1]
+package cakephpgenerator;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URLDecoder;
+
+//画面遷移図読み込み用クラス
+public class LoadScreen{
+String loads;
+
+static void getScreenData(String table[]){
+try{
+File file = new File("/Users/b1011129/資料/sample/面談予約管理システム用画面遷移図.xml");
+
+if (checkBeforeReadfile(file)){
+BufferedReader br = new BufferedReader(new FileReader(file));
+
+String str;
+String array[] = new String[50];//デバッグ用
+//String[] table = new String[50];
+String sort2[] = new String[50];//ソート用配列
+int i = 0; //配列用変数
+int name;
+while((str = br.readLine()) != null){//1行ずつ確認していく
+if(str.indexOf("</JUDE:StateChartDiagram>") != -1) break;//画面の名前を取得
+else if(str.indexOf("<UML:CompositeState xmi.id=") != -1) {//画面遷移図名取得
+name = str.indexOf("name=\"");
+name += "name=\"".length();
+str = str.substring(name);//前の余計な文字列を削除
+name = str.indexOf("\"");
+str = str.substring(0,name);//後ろの余計な文字列を削除
+str = URLDecoder.decode(str,"utf-8");
+if(str.indexOf("認証") != -1||str.indexOf("ログイン") != -1) str = "login";
+else if(str.indexOf("追加") != -1||str.indexOf("登録") != -1||str.indexOf("保存") != -1) str = "add";
+else if(str.indexOf("編集") != -1||str.indexOf("変更") != -1) str = "edit";
+else if(str.indexOf("削除") != -1) {
+if(str.indexOf("全") != -1) str = "delete_all";
+else str = "delete";
+}
+else if(str.indexOf("一覧") != -1||str.indexOf("確認") != -1) str = "index";
+else if(str.indexOf("詳細") != -1) str = "view";
+else if(str.indexOf("履歴") != -1) str = "history";
+else str = "none";
+array[i] = str;
+}
+else if(str.indexOf("<UML:ModelElement.definition xmi.value=") != -1) {//プロパティビューの要素を取得
+name = str.indexOf("xmi.value=\"");
+name += "xmi.value=\"".length();
+str = str.substring(name);//前の余計な文字列を削除
+name = str.indexOf("\"");
+str = str.substring(0,name);//後ろの余計な文字列を削除
+str = EditChar.firstCharLerge(str);
+array[i] = str + "," + array[i];
+i++;
+}
+}
+//ソート(1つの配列の一番左にテーブル名、以降はカンマで区切り各メソッドが入る)
+i=0;
+while(array[i]!=null){
+String[] sort = array[i].split(",",0);
+for(int j=0;;j++){
+if(table[j]!=null&&table[j].indexOf(",") != -1)
+sort2 = table[j].split(",",0);
+if(table[j]==null) {
+table[j] = sort[0] + "," + sort[1];
+break;
+}
+if(sort2[0].equals(sort[0])) {
+table[j] += "," + sort[1];
+break;
+}
+}
+i++;
+}
+
+i=0;
+System.out.println("STdata------------------------------");
+while(table[i]!=null){//デバッグ用
+System.out.println(table[i]);
+i++;
+}
+System.out.println("------------------------------------");
+br.close();
+}else{
+System.out.println("ファイルが見つからないか開けません");
+}
+}catch(FileNotFoundException e){
+System.out.println(e);
+}catch(IOException e){
+System.out.println(e);
+}
+}
+
+//ファイルを開く前の確認用メソッド
+private static boolean checkBeforeReadfile(File file){
+if (file.exists()){
+if (file.isFile() && file.canRead()){
+return true;
+}
+}
+
+return false;
+}
+}
+\end{lstlisting}　
+
+\begin{lstlisting}[caption=CreateDirectory .java,label=1]
+package cakephpgenerator;
+
+import java.io.File;
+
+//ディレクトリ生成用クラス
+public class CreateDirectory {
+String directory;
+String newDirectory(String name) {
+File newdirectory = new File(directory);
+if(newdirectory.mkdir()) return name + "を生成しました";
+else return name + "は既に存在しています";
+}
+}
+
+\end{lstlisting}　
+
+\begin{lstlisting}[caption=CreateFile.java,label=1]
+package cakephpgenerator;
+
+import java.io.File;
+import java.io.IOException;
+
+//ファイル生成用クラス
+public class CreateFile {
+String file;
+String newFile(String name) {
+File newfile = new File(file);
+
+try{
+if(newfile.createNewFile()) return name + "を生成しました";
+else return name + "は既に存在しています";
+}catch(IOException e) {
+System.out.println(e);
+return name + "が生成できませんでした";
+}
+}
+}
+\end{lstlisting}　
+
+\begin{lstlisting}[caption=EditChar.java,label=1]
+package cakephpgenerator;
+
+//文字列操作用クラス
+public class EditChar {
+
+//文字列の最後の1文字を消去するメソッド
+public static String deleteLastChar(String text){
+return text.substring(0, text.length()-1);
+}
+
+//文字列の一部を抽出するメソッド
+public static String extractChar(String text, String fronttext, String latertext){
+int index;
+index = text.indexOf(fronttext);
+index += fronttext.length();
+text = text.substring(index);//前の文字列を消去
+index = text.indexOf(latertext);
+text = text.substring(0,index);//後ろの文字列を消去
+return text;
+}
+
+//文字列の最初の文字だけを大文字にするメソッド
+public static String firstCharLerge(String text){
+String firsttext = text.substring(0,1);//1文字目を取得
+firsttext = firsttext.toUpperCase();//大文字に
+text = text.substring(2-1);//2文字目から最後の文字まで(1文字目を消去)
+text = firsttext + text;
+return text;
+}
+}
+
+\end{lstlisting}　
+
+\begin{lstlisting}[caption=WriteController .java,label=1]
+package cakephpgenerator;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+
+//コントローラー書き込み用クラス
+class WriteController {
+String controllerPath;
+
+void writeCode(String stdate, String tablename, String[] erdata, String[] stdatas) {
+String[] array = stdate.split(",",0);
+String modelname = array[0].substring(0, array[0].length()-1);//モデル名
+String lcname = array[0].toLowerCase();//小文字に変換
+String[] tabledata = tablename.split(",",0);
+int checkbox_count;
+int radio_count;
+int foreign_flag = 0;
+int login_flag = 0;
+int index;
+try {
+File file = new File(controllerPath);
+
+if (checkBeforeWritefile(file)) {
+PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+
+pw.println("<?php");
+pw.println("class " + array[0] + "Controller extends AppController {");
+pw.println("\tpublic $name = \'" + array[0] + "\';\n");
+for(int i=1;i<tabledata.length;i++){
+if(tabledata[i]==null) break;
+String[] colum = tabledata[i].split("&",0);
+if(colum.length==3){
+if(foreign_flag == 0){
+pw.println("\tpublic $uses = array(");
+pw.println("\t\t'" + modelname + "\' ");
+foreign_flag = 1;
+}
+index = colum[0].indexOf("_id");
+String columname = colum[0].substring(0,index);//後ろの余計な文字列を削除
+String foreignmodelname = EditChar.firstCharLerge(columname);//外部キー元のモデル名
+if(foreign_flag == 0) pw.println("\t\t\'" + foreignmodelname + "\'");
+else pw.println("\t\t, \'" + foreignmodelname + "\'");
+}
+}
+if(foreign_flag==1) {
+pw.println("\t);");
+pw.println("\t//使用するモデル名を列挙\n");
+}
+
+for(int i=0;;i++){//ログイン周りの記述
+if(stdatas[i]==null) break;
+String[] tablemethods = stdatas[i].split(",", 0);
+for(int j=1;tablemethods.length>j;j++){
+if(tablemethods[j].equals("login")){
+pw.println("\tpublic $components = array('Session', 'Auth');\n");
+pw.println("\tpublic function beforeFilter(){");
+pw.println("\t\t$this->Auth->authError='ログインが必要です';");
+pw.println("\t\t//$this->Auth->allow('add');");
+pw.println("\t\t//ここで認証なしでも表示できる画面(メソッド名)を記述");
+pw.println("\t}\n");
+if(tablemethods[0].equals(modelname + "s")){//もしloginメソッドが記述されているテーブル名だったら
+login_flag = 1;
+}
+break;
+}
+}
+}
+
+for(int i=1;i<array.length; i++){
+if(array[i].equals("add")) {//追加機能
+checkbox_count = 1;
+radio_count = 1;
+pw.println("\tpublic function add() {");
+for(int j=1;j<tabledata.length;j++) {
+if(tabledata[j]==null) break;
+String[] colum = tabledata[j].split("&",0);
+if(colum.length==3){//外部キーが存在する場合
+index = colum[0].indexOf("_id");
+String columname = colum[0].substring(0,index);//後ろの余計な文字列を削除
+String foreignmodelname = EditChar.firstCharLerge(columname);//外部キー元のモデル名
+String foreigncolum;
+for(int k=0;;k++){
+String[] table = erdata[k].split(",",0);
+if(table[0].equals(foreignmodelname + "s")){
+	for(int l=1;;l++){
+		if(table[l].indexOf("id")==-1){//主キー、外部キーでなかった場合
+			String[] columnames = table[l].split("&",0);
+			foreigncolum = columnames[0];
+			break;
+		}
+	}
+	break;
+}
+}
+if(colum[2].equals("one_to_many")||colum[2].equals("many_to_many")){//1対多、多対多の場合
+pw.println("\t\t$select" + checkbox_count + " = $this->" + foreignmodelname + "->find('list', array('fields' => array('id', '" + foreigncolum + "')));");
+pw.println("\t\t$rhis->set->('select" + checkbox_count + "', $select" + checkbox_count + ")");
+checkbox_count++;
+}
+else {
+pw.println("\t\t$radio" + radio_count + " = $this->" + foreignmodelname + "->find('list', array('fields' => array('id', '" + foreigncolum + "')));");
+pw.println("\t\t$this->set('radio" + radio_count + "', $radio" + radio_count + ");");			
+radio_count++;
+}
+}
+}
+pw.println("\t\tif ($this->request->is('post')) {");
+pw.println("\t\t//POST送信されたら");
+pw.println("\t\t\t$this->" + modelname + "->create();");
+pw.println("\t\t\tif ($this->" + modelname + "->save($this->request->data)) {");
+pw.println("\t\t\t//送信されたデータがテーブルに保存されたら");
+pw.println("\t\t\t\t$this->Session->setFlash('保存しました。');");
+pw.println("\t\t\t\t//SessionComponentを使用");
+if(login_flag==1) pw.println("\t\t\t\t$this->Auth->login();");
+pw.println("\t\t\t\t$this->redirect(array('action' => 'index'));");
+pw.println("\t\t\t\t//indexに遷移する");
+pw.println("\t\t\t} else {");
+pw.println("\t\t\t\t$this->Session->setFlash('保存できませんでした。');");
+pw.println("\t\t\t\t//SessionComponentを使用");
+pw.println("\t\t\t}");
+pw.println("\t\t}");
+pw.println("\t}\n");
+}
+
+else if(array[i].equals("index")) {//一覧表示機能
+pw.println("\tpublic function index() {");
+pw.println("\t\t$this->" + modelname + "->recursive = 0;");
+pw.println("\t\t$this->set('" + lcname + "', $this->paginate());");
+pw.println("\t\t//Paginationを利用");
+pw.println("\t\t$" + lcname + "= $this->" + modelname + "->find('all');");
+pw.println("\t\t//findメソッド（テーブルの中身を全て取得する）");
+pw.println("\t\t$this->set('" + lcname + "', $" + lcname + ");");
+pw.println("\t\t//ビューに値をセット");
+pw.println("\t}\n");
+}
+else if(array[i].equals("delete")) {//削除機能
+pw.println("\tpublic function delete($id = null) {");
+pw.println("\t\t$this->" + modelname + "->id = $id;");
+pw.println("\t\tif (!$this->" + modelname + "->exists()) {");
+pw.println("\t\t//そのidが存在しなかった場合");
+pw.println("\t\t\tthrow new NotFoundException('不正なidです。');");
+pw.println("\t\t}");
+pw.println("\t\t$this->request->onlyAllow('post', 'delete');");
+pw.println("\t\t//post送信かつdeleteのときのみ実行を許可する");
+pw.println("\t\tif ($this->" + modelname + "->delete()) {");
+pw.println("\t\t\t//データが削除できたら");
+pw.println("\t\t\t$this->Session->setFlash('削除しました。');");
+pw.println("\t\t\t//SessionComponentを使用");
+pw.println("\t\t\t$this->redirect(array('action' => 'index'));");
+pw.println("\t\t\t//indexに遷移する");
+pw.println("\t\t}");
+pw.println("\t\telse {");
+pw.println("\t\t\t$this->Session->setFlash('削除できませんでした。');");
+pw.println("\t\t\t//SessionComponentを使用");
+pw.println("\t\t\t$this->redirect(array('action' => 'index'));");
+pw.println("\t\t\t//indexに遷移する");
+pw.println("\t\t}");
+pw.println("\t}\n");
+}
+else if(array[i].equals("edit")) {//編集機能
+checkbox_count = 1;
+radio_count = 1;
+pw.println("\tpublic function edit($id = null) {");
+for(int j=1;j<tabledata.length;j++) {
+if(tabledata[j]==null) break;
+String[] colum = tabledata[j].split("&",0);
+if(colum.length==3){
+index = colum[0].indexOf("_id");
+String columname = colum[0].substring(0,index);//後ろの余計な文字列を削除
+String foreignmodelname = EditChar.firstCharLerge(columname);//外部キー元のモデル名
+String foreigncolum;
+for(int k=0;;k++){
+String[] table = erdata[k].split(",",0);
+if(table[0].equals(foreignmodelname + "s")){
+	for(int l=1;;l++){
+		if(table[l].indexOf("id")==-1){//主キー、外部キーでなかった場合
+			String[] columnames = table[l].split("&",0);
+			foreigncolum = columnames[0];
+			break;
+		}
+	}
+	break;
+}
+}
+if(colum[2].equals("one_to_many")||colum[2].equals("many_to_many")){//1対多、多対多の場合
+pw.println("\t\t$select" + checkbox_count + " = $this->" + foreignmodelname + "->find('list', array('fields' => array('id', '" + foreigncolum + "')));");
+pw.println("\t\t$rhis->set->('select" + checkbox_count + "', $select" + checkbox_count + ")");
+checkbox_count++;
+}
+else {
+pw.println("\t\t$radio" + radio_count + " = $this->" + foreignmodelname + "->find('list', array('fields' => array('id', '" + foreigncolum + "')));");
+pw.println("\t\t$this->set('radio" + radio_count + "', $radio" + radio_count + ");");			
+radio_count++;
+}
+}
+}
+pw.println("\t\t$this->" + modelname + "->id = $id;");
+pw.println("\t\tif (!$this->" + modelname + "->exists()) {");
+pw.println("\t\t//そのidが存在しなかった場合");
+pw.println("\t\t\tthrow new NotFoundException('不正なidです。');");
+pw.println("\t\t}");
+pw.println("\t\tif ($this->request->is('post') || $this->request->is('put')) {");
+pw.println("\t\t//post、あるいはputが実行されたら");
+pw.println("\t\t\tif ($this->" + modelname + "->save($this->request->data)) {");
+pw.println("\t\t\t//送信されたデータがテーブルに保存されたら");
+pw.println("\t\t\t\t$this->Session->setFlash('変更しました。');");
+pw.println("\t\t\t\t//SessionComponentを使用");
+if(login_flag==1) pw.println("\t\t\t\t$this->Auth->login();");
+pw.println("\t\t\t\t$this->redirect(array('action' => 'index'));");
+pw.println("\t\t\t\t//indexに遷移する");
+pw.println("\t\t\t}");
+pw.println("\t\t\telse {");
+pw.println("\t\t\t\t$this->Session->setFlash('変更できませんでした。');");
+pw.println("\t\t\t\t//SessionComponentを使用");
+pw.println("\t\t\t}");
+pw.println("\t\t}");
+pw.println("\t\telse {");
+pw.println("\t\t\t$options = array('conditions' => array('" + modelname + ".' . $this->" + modelname + "->primaryKey => $id));");
+pw.println("\t\t\t$this->request->data = $this->" + modelname + "->find('first', $options);");
+pw.println("\t\t}");
+pw.println("\t}\n");
+}
+else if(array[i].equals("view")) {//詳細表示機能
+pw.println("\tpublic function view($id = null) {");
+pw.println("\t\tif (!$this->" + modelname + "->exists($id)) {");
+pw.println("\t\t//そのidが存在しなかった場合");
+pw.println("\t\t\tthrow new NotFoundException('不正なidです。');");
+pw.println("\t\t}");
+pw.println("\t\t$options = array('conditions' => array('" + modelname + ".' . $this->" + modelname + "->primaryKey => $id));");
+pw.println("\t\t$this->set('" + lcname + "', $this->" + modelname + "->find('first', $options));");
+pw.println("\t\t//ビューに値をセット");
+pw.println("\t}\n");
+}
+else if(array[i].equals("history")) {//履歴表示機能
+pw.println("\tpublic function history() {");
+pw.println("\t\t$this->" + modelname + "->recursive = 0;");
+pw.println("\t\t$this->set('" + lcname + "', $this->paginate());");
+pw.println("\t\t//Paginationを利用");
+pw.println("\t\t$" + lcname + "= $this->" + modelname + "->find('all');");
+pw.println("\t\t//findメソッド（テーブルの中身を全て取得する）");
+pw.println("\t\t$this->set('" + lcname + "', $" + lcname + ");");
+pw.println("\t\t//ビューに値をセット");
+pw.println("\t}\n");
+}
+else if(array[i].equals("delete_all")) {//全削除機能
+pw.println("\tpublic function delete_all() {");
+pw.println("\t\tif($this->request->is('post','delete_all')) {");
+pw.println("\t\t//POST送信かつdelete_allされたら");
+pw.println("\t\t\tif ($this->" + modelname + "->query('TRUNCATE " + lcname + ";')) {");
+pw.println("\t\t\t//テーブルの全レコードを削除");
+pw.println("\t\t\t\t$this->Session->setFlash('" + lcname + "テーブルの全レコードを削除しました。');");
+pw.println("\t\t\t\t$this->redirect(array('action' => 'index'));");
+pw.println("\t\t\t}");
+pw.println("\t\t\t$this->Session->setFlash('全削除できませんでした。。');");
+pw.println("\t\t\t$this->redirect(array('action' => 'index'));");
+pw.println("\t\t}");
+pw.println("\t}\n");
+}
+else if(array[i].equals("login")) {//ログイン機能
+pw.println("\tpublic function login() {");
+pw.println("\t\tif($this->request->is('post')) {");
+pw.println("\t\t//ポスト送信されたら");
+pw.println("\t\t\tif($this->Auth->login()){");
+pw.println("\t\t\t\t$this->redirect(array('action' => 'index'));");
+pw.println("\t\t\t}");
+pw.println("\t\t\telse $this->Session->setFlash('ログインに失敗しました。');");
+pw.println("\t\t}");
+pw.println("\t}\n");
+}
+else {
+pw.println("\tpublic function " + array[i] + "() {");
+pw.println("\t\t");
+pw.println("\t}\n");
+}
+}
+pw.println("}");
+pw.println("?>");
+
+pw.close();
+System.out.println(array[0] + "Controller.phpにコードを記述しました");
+} else {
+System.out.println(array[0] + "Controller.phpにコードを記述できませんでした");
+}
+} catch(IOException e) {
+System.out.println(e);
+}
+}
+
+private static boolean checkBeforeWritefile(File file){
+if (file.exists()) {
+if (file.isFile() && file.canWrite()) {
+return true;
+}
+}
+
+return false;
+}
+}
+\end{lstlisting}　
+
+\begin{lstlisting}[caption=WriteView.java,label=1]
+package cakephpgenerator;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+
+//ビューファイル書き込み用クラス
+public class WriteView {
+String viewPath;
+
+void writeCode(String name, String[] tabledata, String[] erdata, String[] stdata) {//メソッド名、テーブル名、ERデータ全部、画面遷移図全部
+String modelname = tabledata[0].substring(0, tabledata[0].length()-1);//モデル名
+String lcname = tabledata[0].toLowerCase();//小文字に変換
+String lcnames = lcname.substring(0, lcname.length()-1);
+int checkbox_count = 1;
+int radio_count = 1;
+//int date_count = 0;
+//String[] columname = null;
+
+try{
+File file = new File(viewPath);
+
+if(checkBeforeWritefile(file)) {
+PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+
+if(name.equals("add")) {
+pw.println("<div class=\""+ lcname + " form\">");
+pw.println("<?php echo $this->Form->create('" + modelname + "'); ?>");
+pw.println("<?php //Formヘルパーを使用 ?>");
+pw.println("\t<fieldset>");
+pw.println("\t\t<legend>追加画面</legend>");
+pw.println("\t<?php");
+for(int j=1;j<tabledata.length;j++) {
+if(tabledata[j]==null) break;
+String[] colum = tabledata[j].split("&",0);
+if(colum[1].equals("DATE")){//型がdateだったら
+pw.println("\t\techo $this->Form->input('" + colum[0] + "', ");
+pw.println("\t\t\tarray(");
+pw.println("\t\t\t\t'label' => '"+ colum[0] +"',");
+pw.println("\t\t\t\t'dateFormat' => 'YMD',");
+pw.println("\t\t\t\t'monthNames' => false,");
+pw.println("\t\t\t\t'separator' => '/',");
+pw.println("\t\t\t));");
+}
+else if(colum[1].equals("DATETIME")){//型がdatetimeだったら
+pw.println("\t\techo $this->Form->input('" + colum[0] + "', ");
+pw.println("\t\t\tarray(");
+pw.println("\t\t\t\t'label' => '"+ colum[0] +"',");
+pw.println("\t\t\t\t'dateFormat' => 'YMD',");
+pw.println("\t\t\t\t'timeFormat' => '24',");
+pw.println("\t\t\t\t'monthNames' => false,");
+pw.println("\t\t\t\t'separator' => '/',");
+pw.println("\t\t\t));");
+}
+else if(colum.length==3){//外部キーが存在した場合
+if(colum[2].equals("one_to_many")||colum[2].equals("many_to_many")){//1対多、多対多の場合
+pw.println("\t\techo $this->Form->input('" + colum[0] + "', ");
+pw.println("\t\t\tarray(");
+pw.println("\t\t\t\t'type' => 'select',");
+pw.println("\t\t\t\t'multiple'=> 'checkbox',");
+pw.println("\t\t\t\t'options' => $checkbox" + checkbox_count + ",");
+pw.println("\t\t\t\t'label' => '"+ colum[0] + "',");
+pw.println("\t\t\t));");
+checkbox_count++;
+}
+else {
+pw.println("\t\techo $this->Form->input('" + colum[0] + "', ");
+pw.println("\t\t\tarray(");
+pw.println("\t\t\t\t'type' => 'radio',");
+pw.println("\t\t\t\t'value' => 1,");
+pw.println("\t\t\t\t'options' => $radio" + radio_count + ",");
+pw.println("\t\t\t));");
+radio_count++;
+}
+}
+else if(colum[0].equals("id")){
+
+}
+else pw.println("\t\techo $this->Form->input('" + colum[0] + "', array('label' => '" + colum[0] + "'));");
+}
+pw.println("\t\t//入力フォームを表示");
+pw.println("\t?>");
+pw.println("\t</fieldset>");
+pw.println("<?php echo $this->Form->end('送信'); ?>");
+pw.println("<?php //フォームの内容をPOST送信する ?>");
+pw.println("</div>\n");
+pw.println("<div class=\"actions\">");
+pw.println("\t<h3>画面</h3>");
+pw.println("\t<ul>");
+pw.println("\t\t<li><?php echo $this->Html->link('index', array('action' => 'index')); ?></li>");
+pw.println("\t</ul>");
+pw.println("</div>");
+}
+if(name.equals("index")) {
+pw.println("<div class=\""+ lcname + " index\">");
+pw.println("\t<legend>一覧画面</legend>");
+pw.println("\t<table cellpadding=\"0\" cellspacing=\"0\">");
+pw.println("\t<tr>");
+for(int j=1;j<tabledata.length;j++){
+if(tabledata[j]==null) break;
+String[] colum = tabledata[j].split("&",0);
+if(colum[0].indexOf("_id") != -1){//外部キーが存在したら
+for(int k=0;;k++){
+if(erdata[k]==null) break;
+String[] foreigntabledata = erdata[k].split(",",0);
+String foreignmodelname = foreigntabledata[0].substring(0, foreigntabledata[0].length()-1);//モデル名
+String lcforeignmodelname = foreignmodelname.toLowerCase();//小文字に変換
+if(colum[0].indexOf(lcforeignmodelname) != -1){
+for(int l=1;l<foreigntabledata.length;l++){
+String[] foreigncolum = foreigntabledata[l].split("&",0);
+if(foreigncolum[0].equals("id")){
+
+}
+else if(foreigncolum[0].indexOf("_id") != -1){
+
+}
+else{
+pw.println("\t\t<th><?php echo $this->Paginator->sort('" + foreigncolum[0] + "', '" + foreigncolum[0] + "'); ?></th>");
+}
+}
+}
+}
+}
+else if(colum[0].equals("id")){
+
+}
+else{
+pw.println("\t\t<th><?php echo $this->Paginator->sort('" + colum[0] + "', '" + colum[0] + "'); ?></th>");
+}
+}
+pw.println("\t\t<th><?php ?>");
+pw.println("\t\t<th class=\"actions\">操作</th>");
+pw.println("\t</tr>\n");
+pw.println("\t<?php foreach ($" + lcname + " as $" + lcnames + "): ?>");
+pw.println("\t<?php //foreach文（繰り返し）?>");
+pw.println("\t<tr>");
+for(int j=1;j<tabledata.length;j++) {
+if(tabledata[j]==null) break;
+String[] colum = tabledata[j].split("&",0);
+if(colum[0].indexOf("_id") != -1){//外部キーが存在したら
+for(int k=0;;k++){
+if(erdata[k]==null) break;
+String[] foreigntabledata = erdata[k].split(",",0);
+String foreignmodelname = foreigntabledata[0].substring(0, foreigntabledata[0].length()-1);//モデル名
+String lcforeignmodelname = foreignmodelname.toLowerCase();//小文字に変換
+if(colum[0].indexOf(lcforeignmodelname) != -1){
+for(int l=1;l<foreigntabledata.length;l++){
+String[] foreigncolum = foreigntabledata[l].split("&",0);
+if(foreigncolum[1].equals("DATE")){
+pw.println("\t\t<td><?php echo h(date('Y/m/d', strtotime($" + lcnames + "['" + foreignmodelname + "']['" + foreigncolum[0] + "']))); ?>&nbsp;</td>");
+}
+else if(foreigncolum[1].equals("DATETIME")){
+pw.println("\t\t<td><?php echo h(date('Y/m/d H:i', strtotime($" + lcnames + "['" + foreignmodelname + "']['" + foreigncolum[0] + "']))); ?>&nbsp;</td>");
+}
+else if(foreigncolum[0].equals("id")){
+
+}
+else if(foreigncolum[0].indexOf("_id") != -1){
+
+}
+else{
+pw.println("\t\t<td><?php echo h($" + lcnames + "['" + foreignmodelname + "']['" + foreigncolum[0] + "']); ?>&nbsp;</td>");
+}
+}
+}
+}
+}
+else if(colum[0].equals("id")){
+
+}
+else {
+pw.println("\t\t<td><?php echo($" + lcnames + "['" + modelname + "']['" + colum[0] + "']); ?>&nbsp;</td>");
+}
+}
+pw.println("\t\t<td class=\"actions\">");
+for(int i=0;;i++){
+if(stdata[i]==null) break;
+String[] st = stdata[i].split(",",0);
+if(modelname.equals(EditChar.deleteLastChar(st[0]))){
+for(int j=1;j<st.length;j++){
+if(st[j].equals("edit")){
+pw.println("\t\t\t<?php echo $this->Html->link('編集', array('action' => 'edit', $" + lcnames + "['" + modelname + "']['id'])); ?>");
+pw.println("\t\t\t<?php //Htmlヘルパーを利用 ?>");
+}
+else if(st[j].equals("view")){
+pw.println("\t\t\t<?php echo $this->Html->link('詳細', array('action' => 'view', $" + lcnames + "['" + modelname + "']['id'])); ?>");
+pw.println("\t\t\t<?php //Htmlヘルパーを利用 ?>");	
+}
+else if(st[j].equals("delete")){
+pw.println("\t\t\t<?php echo $this->Form->postLink('削除', array('action' => 'delete', $" + lcnames + "['" + modelname + "']['id']), null, '本当に削除しますか？'); ?>");
+pw.println("\t\t\t<?php //Formヘルパーを利用、削除確認画面が表示される ?>");
+}
+}
+}
+}
+pw.println("\t\t</td>");
+pw.println("\t</tr>");
+pw.println("\t<?php endforeach; ?>");
+pw.println("\t<?php //foreach文終わり ?>");
+pw.println("\t</table>\n");
+pw.println("\t<div class=\"paging\">");
+pw.println("\t<?php");
+pw.println("\t\techo $this->Paginator->prev('< ' . '前のページ', array(), null, array('class' => 'prev disabled'));");
+pw.println("\t\techo $this->Paginator->numbers(array('separator' => ''));");
+pw.println("\t\techo $this->Paginator->next('次のページ' . ' >', array(), null, array('class' => 'next disabled'));");
+pw.println("\t?>");
+pw.println("\t</div>");
+pw.println("</div>\n");
+pw.println("<div class=\"actions\">");
+pw.println("\t<h3>画面</h3>");
+pw.println("\t<ul>");
+for(int i=0;;i++){
+if(stdata[i]==null) break;
+String[] st = stdata[i].split(",",0);
+if(modelname.equals(EditChar.deleteLastChar(st[0]))){
+for(int j=1;j<st.length;j++){
+if(st[j].equals("index")||st[j].equals("view")||st[j].equals("edit")||st[j].equals("delete")){
+
+}else {
+pw.println("\t\t<li><?php echo $this->Html->link('" + st[j] + "', array('action' => '" + st[j] + "')); ?></li>");
+}
+}
+}else{
+pw.println("\t\t<li><?php echo $this->Html->link('" + st[0] + "/index', array('controller' => '" + st[0] + "', 'action' => 'index')); ?></li>");
+}
+}
+pw.println("\t</ul>");
+pw.println("</div>");
+}
+if(name.equals("edit")) {
+pw.println("<div class=\""+ lcname + " form\">");
+pw.println("<?php echo $this->Form->create('" + modelname + "'); ?>");
+pw.println("<?php //Formヘルパーを使用 ?>");
+pw.println("\t<fieldset>");
+pw.println("\t\t<legend>編集画面</legend>");
+pw.println("\t<?php");
+for(int j=1;j<tabledata.length;j++) {
+if(tabledata[j]==null) break;
+String[] colum = tabledata[j].split("&",0);
+if(colum[1].equals("DATE")){//型がdateだったら
+pw.println("\t\techo $this->Form->input('" + colum[0] + "', ");
+pw.println("\t\t\tarray(");
+pw.println("\t\t\t\t'label' => '"+ colum[0] +"',");
+pw.println("\t\t\t\t'dateFormat' => 'YMD',");
+pw.println("\t\t\t\t'monthNames' => false,");
+pw.println("\t\t\t\t'separator' => '/',");
+pw.println("\t\t\t));");
+}
+else if(colum[1].equals("DATETIME")){//型がdatetimeだったら
+pw.println("\t\techo $this->Form->input('" + colum[0] + "', ");
+pw.println("\t\t\tarray(");
+pw.println("\t\t\t\t'label' => '"+ colum[0] +"',");
+pw.println("\t\t\t\t'dateFormat' => 'YMD',");
+pw.println("\t\t\t\t'timeFormat' => '24',");
+pw.println("\t\t\t\t'monthNames' => false,");
+pw.println("\t\t\t\t'separator' => '/',");
+pw.println("\t\t\t));");
+}
+else if(colum.length==3){
+if(colum[2].equals("one_to_many")||colum[2].equals("many_to_many")){//1対多、多対多の場合
+pw.println("\t\techo $this->Form->input('" + colum[0] + "', ");
+pw.println("\t\t\tarray(");
+pw.println("\t\t\t\t'type' => 'select',");
+pw.println("\t\t\t\t'multiple'=> 'checkbox',");
+pw.println("\t\t\t\t'options' => $checkbox" + checkbox_count + ",");
+pw.println("\t\t\t\t'label' => '"+ colum[0] + "',");
+pw.println("\t\t\t));");
+checkbox_count++;
+}
+else if(colum[0].equals("id")){
+
+}
+else {
+pw.println("\t\techo $this->Form->input('" + colum[0] + "', ");
+pw.println("\t\t\tarray(");
+pw.println("\t\t\t\t'type' => 'radio',");
+pw.println("\t\t\t\t'value' => 1,");
+pw.println("\t\t\t\t'options' => $radio" + radio_count + ",");
+pw.println("\t\t\t));");
+radio_count++;
+}
+}
+else pw.println("\t\techo $this->Form->input('" + colum[0] + "', array('label' => '" + colum[0] + "'));");
+}
+pw.println("\t\t//入力フォームを表示");
+pw.println("\t?>");
+pw.println("\t</fieldset>");
+pw.println("<?php echo $this->Form->end('送信'); ?>");
+pw.println("<?php //フォームの内容をPOST送信する ?>");
+pw.println("</div>\n");
+pw.println("<div class=\"actions\">");
+pw.println("\t<h3>画面</h3>");
+pw.println("\t<ul>");
+pw.println("\t\t<li><?php echo $this->Html->link('index', array('action' => 'index')); ?></li>");
+pw.println("\t</ul>");
+pw.println("</div>");
+}
+if(name.equals("history")) {
+pw.println("<div class=\""+ lcname + " history\">");
+pw.println("\t<legend>履歴画面</legend>");
+pw.println("\t<table cellpadding=\"0\" cellspacing=\"0\">");
+pw.println("\t<tr>");
+for(int j=1;j<tabledata.length;j++){
+if(tabledata[j]==null) break;
+String[] colum = tabledata[j].split("&",0);
+if(colum[0].indexOf("_id") != -1){//外部キーが存在したら
+for(int k=0;;k++){
+if(erdata[k]==null) break;
+String[] foreigntabledata = erdata[k].split(",",0);
+String foreignmodelname = foreigntabledata[0].substring(0, foreigntabledata[0].length()-1);//モデル名
+String lcforeignmodelname = foreignmodelname.toLowerCase();//小文字に変換
+if(colum[0].indexOf(lcforeignmodelname) != -1){
+for(int l=1;l<foreigntabledata.length;l++){
+String[] foreigncolum = foreigntabledata[l].split("&",0);
+if(foreigncolum[0].equals("id")){
+
+}
+else if(foreigncolum[0].indexOf("_id") != -1){
+
+}
+else{
+pw.println("\t\t<th><?php echo $this->Paginator->sort('" + foreigncolum[0] + "', '" + foreigncolum[0] + "'); ?></th>");
+}
+}
+}
+}
+}
+else if(colum[0].equals("id")){
+
+}
+else{
+pw.println("\t\t<th><?php echo $this->Paginator->sort('" + colum[0] + "', '" + colum[0] + "'); ?></th>");
+}
+}
+pw.println("\t\t<th><?php ?>");
+pw.println("\t\t<th class=\"actions\">操作</th>");
+pw.println("\t</tr>\n");
+pw.println("\t<?php foreach ($" + lcname + " as $" + lcnames + "): ?>");
+pw.println("\t<?php //foreach文（繰り返し）?>");
+pw.println("\t<tr>");
+//					if(colum[1].equals("DATE")||colum[1].equals("DATETIME")){
+//						if(date_count==0){
+//							pw.println("\t<?php if (date(\"Y/m/d\")<=date(\"Y/m/d\", strtotime($" + lcname + "['" + modelname + "']['" + colum[0] + "']))): ?>");
+//							date_count++;
+//						}
+//					}
+for(int j=1;j<tabledata.length;j++) {
+if(tabledata[j]==null) break;
+String[] colum = tabledata[j].split("&",0);
+if(colum[0].indexOf("_id") != -1){//外部キーが存在したら
+for(int k=0;;k++){
+if(erdata[k]==null) break;
+String[] foreigntabledata = erdata[k].split(",",0);
+String foreignmodelname = foreigntabledata[0].substring(0, foreigntabledata[0].length()-1);//モデル名
+String lcforeignmodelname = foreignmodelname.toLowerCase();//小文字に変換
+if(colum[0].indexOf(lcforeignmodelname) != -1){
+for(int l=1;l<foreigntabledata.length;l++){
+String[] foreigncolum = foreigntabledata[l].split("&",0);
+if(foreigncolum[1].equals("DATE")){
+pw.println("\t\t<td><?php echo h(date('Y/m/d', strtotime($" + lcnames + "['" + foreignmodelname + "']['" + foreigncolum[0] + "']))); ?>&nbsp;</td>");
+}
+else if(foreigncolum[1].equals("DATETIME")){
+pw.println("\t\t<td><?php echo h(date('Y/m/d H:i', strtotime($" + lcnames + "['" + foreignmodelname + "']['" + foreigncolum[0] + "']))); ?>&nbsp;</td>");
+}
+else if(foreigncolum[0].equals("id")){
+
+}
+else if(foreigncolum[0].indexOf("_id") != -1){
+
+}
+else{
+pw.println("\t\t<td><?php echo h($" + lcnames + "['" + foreignmodelname + "']['" + foreigncolum[0] + "']); ?>&nbsp;</td>");
+}
+}
+}
+}
+}
+else if(colum[0].equals("id")){
+
+}
+else {
+pw.println("\t\t<td><?php echo($" + lcnames + "['" + modelname + "']['" + colum[0] + "']); ?>&nbsp;</td>");
+}
+}
+pw.println("\t\t<td class=\"actions\">");
+pw.println("\t\t\t<?php echo $this->Html->link('編集', array('action' => 'edit', $" + lcnames + "['" + modelname + "']['id'])); ?>");
+pw.println("\t\t\t<?php //Htmlヘルパーを利用 ?>");
+pw.println("\t\t\t<?php echo $this->Form->postLink('削除', array('action' => 'delete', $" + lcnames + "['" + modelname + "']['id']), null, '本当に削除しますか？'); ?>");
+pw.println("\t\t\t<?php //Formヘルパーを利用、削除確認画面が表示される ?>");
+pw.println("\t\t</td>");
+pw.println("\t</tr>");
+pw.println("\t<?php endforeach; ?>");
+pw.println("\t<?php //foreach文終わり ?>");
+pw.println("\t</table>\n");
+pw.println("\t<div class=\"paging\">");
+pw.println("\t<?php");
+pw.println("\t\techo $this->Paginator->prev('< ' . '前のページ', array(), null, array('class' => 'prev disabled'));");
+pw.println("\t\techo $this->Paginator->numbers(array('separator' => ''));");
+pw.println("\t\techo $this->Paginator->next('次のページ' . ' >', array(), null, array('class' => 'next disabled'));");
+pw.println("\t?>");
+pw.println("\t</div>");
+pw.println("</div>\n");
+pw.println("<div class=\"actions\">");
+pw.println("\t<h3>画面</h3>");
+pw.println("\t<ul>");
+pw.println("\t\t<li><?php echo $this->Html->link('index', array('action' => 'index')); ?></li>");
+pw.println("\t</ul>");
+pw.println("</div>\n");
+}
+if(name.equals("view")) {
+pw.println("<div class=\""+ lcname + " view\">");
+pw.println("<h2>詳細</h2>");
+pw.println("\t<dl>");
+for(int j=1;j<tabledata.length;j++) {
+if(tabledata[j]==null) break;
+String[] colum = tabledata[j].split("&",0);
+if(colum[0].indexOf("_id") != -1){//外部キーが存在したら
+for(int k=0;;k++){
+if(erdata[k]==null) break;
+String[] foreigntabledata = erdata[k].split(",",0);
+String foreignmodelname = foreigntabledata[0].substring(0, foreigntabledata[0].length()-1);//モデル名
+String lcforeignmodelname = foreignmodelname.toLowerCase();//小文字に変換
+if(colum[0].indexOf(lcforeignmodelname) != -1){
+for(int l=1;l<foreigntabledata.length;l++){
+String[] foreigncolum = foreigntabledata[l].split("&",0);
+if(foreigncolum[1].equals("DATE")){
+pw.println("\t\t<dt>" + foreigncolum[0] + "</dt>");
+pw.println("\t\t<dd>");
+pw.println("\t\t\t<?php echo h(date('Y/m/d', strtotime($" + lcname + "['" + foreignmodelname + "']['" + foreigncolum[0] + "']))); ?>");
+pw.println("\t\t</dd>");
+}
+else if(foreigncolum[1].equals("DATETIME")){
+pw.println("\t\t<dt>" + foreigncolum[0] + "</dt>");
+pw.println("\t\t<dd>");
+pw.println("\t\t\t<?php echo h(date('Y/m/d H:i', strtotime($" + lcname + "['" + foreignmodelname + "']['" + foreigncolum[0] + "']))); ?>");
+pw.println("\t\t</dd>");
+}
+else if(foreigncolum[0].equals("id")){
+
+}
+else if(foreigncolum[0].indexOf("_id") != -1){
+
+}
+else{
+pw.println("\t\t<dt>" + foreigncolum[0] + "</dt>");
+pw.println("\t\t<dd>");
+pw.println("\t\t\t<?php echo h($" + lcname + "['" + foreignmodelname + "']['" + foreigncolum[0] + "']); ?>");
+pw.println("\t\t</dd>");	
+}
+}
+}
+}
+}
+else if(colum[0].equals("id")){
+
+}
+else {
+if(colum[1].equals("DATE")){
+pw.println("\t\t<dt>" + colum[0] + "</dt>");
+pw.println("\t\t<dd>");	
+pw.println("\t\t\t<?php echo h(date('Y/m/d', strtotime($" + lcname + "['" + modelname + "']['" + colum[0] + "']))); ?>");
+pw.println("\t\t</dd>");	
+}
+else if(colum[1].equals("DATETIME")){
+pw.println("\t\t<dt>" + colum[0] + "</dt>");
+pw.println("\t\t<dd>");	
+pw.println("\t\t\t<?php echo h(date('Y/m/d H:i', strtotime($" + lcname + "['" + modelname + "']['" + colum[0] + "']))); ?>");
+pw.println("\t\t</dd>");	
+}
+else{
+pw.println("\t\t<dt>" + colum[0] + "</dt>");
+pw.println("\t\t<dd>");	
+pw.println("\t\t\t<?php echo h($" + lcname + "['" + modelname + "']['" + colum[0] + "']); ?>");
+pw.println("\t\t</dd>");
+}
+}
+}
+pw.println("\t</dl>");
+pw.println("</div>\n");
+pw.println("<div class=\"actions\">");
+pw.println("\t<h3>画面</h3>");
+pw.println("\t<ul>");
+pw.println("\t\t<li><?php echo $this->Html->link('index', array('action' => 'index')); ?></li>");
+pw.println("\t</ul>");
+pw.println("</div>");
+}
+if(name.equals("delete_all")){
+pw.println("<div class=\"" + lcname + " form\">");
+pw.println("<?php echo $this->Form->create('" + modelname + "'); ?>");
+pw.println("\t<fieldset>");
+pw.println("\t\t<legend>" + lcname + "テーブルの中身を全削除しますか？</legend>");
+pw.println("\t</fieldset>");
+pw.println("<?php echo $this->Form->submit('はい'); ?>");
+pw.println("</div>\n");
+pw.println("<div class=\"actions\">");
+pw.println("\t<h3>画面</h3>");
+pw.println("\t<ul>");
+pw.println("\t\t<li><?php echo $this->Html->link('index', array('action' => 'index')); ?></li>");
+pw.println("\t</ul>");
+pw.println("</div>");
+}
+if(name.equals("login")){
+pw.println("<div class=\"" + lcname + " form\">");
+pw.println("<?php echo $this->Form->create('" + modelname + "'); ?>");
+pw.println("<?php //Formヘルパーを利用?>");
+pw.println("\t<fieldset>");
+pw.println("\t\t<legend>認証画面</legend>");
+pw.println("\t<?php");
+//					for(int i=0;;i++){
+//						if(erdata[i]==null) break;
+//						String[] tablecolums = erdata[i].split(",", 0);
+//						if(tablecolums[0].equals(modelname + "s")){
+//							for(int j=1;;j++){
+//								if(tablecolums[j].indexOf("id") == -1){
+//									columname = tablecolums[j].split("&", 0);
+//									break;
+//								}
+//							}
+//						}
+//					}
+pw.println("\t\techo $this->Form->input('username', array('label' => 'username'));");
+pw.println("\t\techo $this->Form->input('password', array('label' => 'password'));");
+pw.println("\t\t//入力フォームを表示");
+pw.println("\t?>");
+pw.println("\t</fieldset>");
+pw.println("<?php echo $this->Form->end('送信'); ?>");
+pw.println("<?php //フォームの内容をPOST送信する ?>");
+pw.println("</div>\n");
+pw.println("<div class=\"actions\">");
+pw.println("\t<h3>画面</h3>");
+pw.println("\t<ul>");
+pw.println("\t\t<li><?php echo $this->Html->link('index', array('action' => 'index')); ?></li>");
+pw.println("\t</ul>");
+pw.println("</div>");
+}
+
+
+//				for(int j=0;;j++){//デバッグ用
+//				if(tabledata[j]==null) break;
+//				pw.println(tabledata[j]+"\n");
+//			}
+
+pw.close();
+System.out.println(name + ".ctpにコードを記述しました");
+}else {
+System.out.println(name + ".ctpにコードを記述できませんでした");
+}
+}catch(IOException e) {
+System.out.println(e);
+}
+}
+
+private static boolean checkBeforeWritefile(File file) {
+if(file.exists()) {
+if (file.isFile() && file.canWrite()) {
+return true;
+}
+}
+
+return false;
+}
+}
+\end{lstlisting}　
+
+\begin{lstlisting}[caption=WriteModel .java,label=1]
+package cakephpgenerator;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+//モデル書き込み用クラス
+public class WriteModel {
+String modelPath;
+
+void writeCode(String table, String[] array, String[] array2, String[] stdata, String[] erdata) {
+String FK[] = new String[50];
+String FK2[] = new String[50];
+String modelname;
+String validateData = null;
+int flag = 0;
+int flag_validate=0;
+
+try {
+File file = new File(modelPath);
+
+if (checkBeforeWritefile(file)) {
+PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+
+pw.println("<?php");
+pw.println("class " + table + " extends AppModel {");
+pw.println("\tpublic $name = '" + table + "';");
+if(array[0]!=null) {//外部キーを持っているなら
+for(int i=0;;i++){
+if(array[i]==null) break;
+FK = array[i].split("&",0);//外部キーを「&」で区切って配列として格納
+int index = FK[0].indexOf("_id");
+modelname = FK[0].substring(0,index);//「_id」を削除
+modelname = EditChar.firstCharLerge(modelname);
+if(FK[2].equals("many_to_one")||FK[2].equals("one_to_one")||FK[2].equals("many_to_many")){//多対1、あるいは1対1、あるいは多対多のとき
+if(flag==0){
+pw.println("\tpublic $belongsTo = array(");
+pw.println("\t\t'"+ modelname +"' => array(");
+flag = 1;
+} else pw.println("\t\t,'"+ modelname +"' => array(");
+pw.println("\t\t\t'className' => '"+ modelname +"',");
+pw.println("\t\t\t'foreignKey' => '"+ FK[0] +"'");
+pw.println("\t\t)");
+}
+}
+if(flag==1){
+pw.println("\t);\n");
+}
+flag = 0;
+}
+if(array2[0]!=null) {//外部キーが持たれているなら
+for(int i=0;;i++){
+if(array2[i]==null) break;
+FK2 = array2[i].split("&",0);//外部キーを「&」で区切って配列として格納
+modelname = FK2[0].substring(0, FK2[0].length()-1);
+if(FK2[3].equals("many_to_one")){//1対多のとき
+if(flag==0){
+pw.println("\tpublic $hasMany = array(");
+pw.println("\t\t'"+ modelname +"' => array(");
+flag = 1;
+} else pw.println("\t\t,'"+ modelname +"' => array(");
+pw.println("\t\t\t'className' => '"+ modelname +"',");
+pw.println("\t\t\t'foreignKey' => '"+ FK2[1] +"'");
+pw.println("\t\t)");
+}
+}
+if(flag==1){
+pw.println("\t);\n");
+}
+flag = 0;
+for(int i=0;;i++){
+if(array2[i]==null) break;
+FK2 = array2[i].split("&",0);//外部キーを「&」で区切って配列として格納
+modelname = FK2[0].substring(0, FK2[0].length()-1);
+if(FK2[3].equals("one_to_one")){//1対1のとき
+if(flag==0){
+pw.println("\tpublic $hasOne = array(");
+pw.println("\t\t'"+ modelname +"' => array(");
+flag = 1;
+} else pw.println("\t\t,'"+ modelname +"' => array(");
+pw.println("\t\t\t'className' => '"+ modelname +"',");
+pw.println("\t\t\t'foreignKey' => '"+ FK2[1] +"'");
+pw.println("\t\t)");
+}
+}
+if(flag==1){
+pw.println("\t);\n");
+}
+flag = 0;
+for(int i=0;;i++){
+if(array2[i]==null) break;
+FK2 = array2[i].split("&",0);//外部キーを「&」で区切って配列として格納
+modelname = FK2[0].substring(0, FK2[0].length()-1);
+if(FK2[3].equals("many_to_many")){//多対多のとき
+if(flag==0){
+pw.println("\tpublic $hasAndBelongsToMany = array(");
+pw.println("\t\t'"+ modelname +"' => array(");
+flag = 1;
+} else pw.println("\t\t,'"+ modelname +"' => array(");
+pw.println("\t\t\t'className' => '"+ modelname +"',");
+pw.println("\t\t\t'foreignKey' => '"+ FK2[1] +"'");
+pw.println("\t\t)");
+}
+}
+if(flag==1){
+pw.println("\t);\n");
+}
+flag = 0;
+}
+
+//バリデーション周りの記述
+for(int i=0;;i++){
+if(erdata[i]==null) break;
+String[] name = erdata[i].split(",", 0);
+if(table.equals(EditChar.deleteLastChar(name[0]))){
+for(int j=0;j<name.length;j++){
+if(name[j].indexOf("@notnull") != -1||name[j].indexOf("DATETIME") != -1||name[j].indexOf("DATE") != -1){
+if(!name[j].startsWith("id")&&name[j].indexOf("_id")==-1){
+validateData = erdata[i];
+flag_validate = 1;
+}
+}
+}
+}
+}
+if(flag_validate==1){
+String[] splitData = validateData.split(",", 0);
+pw.println("\tpublic $validate = array(");
+for(int i=0;i<splitData.length;i++){
+if(!splitData[i].startsWith("id")&&splitData[i].indexOf("_id")==-1){
+if(splitData[i].indexOf("DATETIME")!=-1||splitData[i].indexOf("DATE")!=-1){
+String[] splitand = splitData[i].split("&", 0);
+String[] splitat = splitand[0].split("@", 0);
+if(flag_validate == 1){
+pw.println("\t\t'" + splitat[0] + "' => 'date'");
+flag_validate = 2;
+} else pw.println("\t\t,'" + splitat[0] + "' => 'date'");
+}
+else if(splitData[i].indexOf("@notnull")!=-1){
+String[] splitand = splitData[i].split("&", 0);
+String[] splitat = splitand[0].split("@", 0);
+if(flag_validate == 1){
+pw.println("\t\t'" + splitat[0] + "' => 'notEmpty'");
+flag_validate = 2;
+} else pw.println("\t\t,'" + splitat[0] + "' => 'notEmpty'");
+}
+}
+}
+pw.println("\t);");
+}
+
+//ここでログイン機能周りのことを記述(ハッシュ化を行う)
+for(int i=0;;i++){
+if(stdata[i]==null) break;
+String[] tabledata = stdata[i].split(",", 0);
+if(tabledata[0].equals(table + "s")){
+for(int j=1;tabledata.length>j;j++){
+if(tabledata[j].equals("login")){
+pw.println("\tpublic function beforeSave($options = array()) {");
+pw.println("\t\t$this->data['" + table + "']['password'] = AuthComponent::password($this->data['" + table + "']['password']);");
+pw.println("\t\treturn true;");
+pw.println("\t}");
+}
+}
+}
+}
+
+pw.println("}");
+pw.println("?>");
+
+pw.close();
+System.out.println(table + ".phpにコードを記述しました");
+} else {
+System.out.println(table + ".phpにコードを記述できませんでした");
+}
+} catch(IOException e) {
+System.out.println(e);
+}
+}
+
+private static boolean checkBeforeWritefile(File file){
+if (file.exists()) {
+if (file.isFile() && file.canWrite()) {
+return true;
+}
+}
+
+return false;
+}
+}
+\end{lstlisting}　
+%付録その2(関連資料など)を必要があれば載せる
+
+%--------------------------------------------------------------------
+% 図一覧
+\listoffigures
+
+%--------------------------------------------------------------------
+% 表一覧
+\listoftables
+
+\end{document}
