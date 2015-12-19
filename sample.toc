@@ -13,10 +13,10 @@
 \contentsline {chapter}{\numberline {第4章}調査}{4}
 \contentsline {section}{\numberline {4.1}既存の旅のしおり作成ツールの調査}{4}
 \contentsline {subsection}{\numberline {4.1.1}旅行計画作成に関するアンケート}{5}
-\contentsline {chapter}{\numberline {第5章}予備実験}{6}
-\contentsline {section}{\numberline {5.1}評価結果}{6}
-\contentsline {section}{\numberline {5.2}評価結果}{6}
-\contentsline {chapter}{\numberline {第6章}作成するツール}{7}
-\contentsline {chapter}{\numberline {第7章}結論と今後の展開}{8}
-\contentsline {section}{\numberline {7.1}まとめ}{8}
-\contentsline {section}{\numberline {7.2}今後の方針}{8}
+\contentsline {chapter}{\numberline {第5章}予備実験}{7}
+\contentsline {section}{\numberline {5.1}評価結果}{7}
+\contentsline {section}{\numberline {5.2}評価結果}{8}
+\contentsline {chapter}{\numberline {第6章}作成するツール}{9}
+\contentsline {chapter}{\numberline {第7章}結論と今後の展開}{10}
+\contentsline {section}{\numberline {7.1}まとめ}{10}
+\contentsline {section}{\numberline {7.2}今後の方針}{10}

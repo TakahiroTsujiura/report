@@ -6,18 +6,17 @@
 %\documentclass[english]{funthesis} % use [english] option for English style
 
 \usepackage{graphicx} % 図(EPS形式)を本文中で読み込む場合はこれを宣言
+\usepackage{url}
 
 % この部分に，タイトル・氏名などを書く．
 % タイトルなどの定義の始まり
-\jtitle{日本語タイトル\\
-移動手段・時間を考慮した旅のしおりによる観光スケジュール作成支援 
-}  % 論文の和文タイトル
+\jtitle{移動手段・時間を考慮した旅のしおりによる\\
+観光スケジュール作成支援 }  % 論文の和文タイトル
 %
-\etitle{Title in English\\
-Support for Making Tourism Schedule for Traveler's Notebook that Considered Moving Transportation and Time
+\etitle{Support for Making Tourism Schedule for Traveler's Notebook that Considered Moving Transportation and Time
 }% 論文の英文タイトル
 %
-\htitle{Short Title in English}   % ヘッダー用の論文の短縮英文タイトル
+\htitle{Support for Making Tourism Schedule}   % ヘッダー用の論文の短縮英文タイトル
 %     必ず1行に収まるように英文タイトルを短縮する．
 %
 \jauthor{辻浦 崇大}     % 氏名(日本語)
@@ -26,15 +25,15 @@ Support for Making Tourism Schedule for Traveler's Notebook that Considered Movi
 \eaffiliciation{Department of Media Architecture} % 所属学科名(英語)
 \studentnumber{1012178}   % 学籍番号
 \jadvisor{伊藤 恵}    % 正指導教員名(日本語)
-\jcoadvisor{副指導 教員} % 副指導教員(日本語)がいる場合は
+%\jcoadvisor{副指導 教員} % 副指導教員(日本語)がいる場合は
                         % コメントアウトし名前を書く
                         % 副指導教員がいない場合は，ここは削除しても可
 \eadvisor{Kei Ito}  % 正指導教員名(英語)
-\ecoadvisor{Prof. Coadvisor}   % 副指導教員(英語)がいる場合は
+%\ecoadvisor{Prof. Coadvisor}   % 副指導教員(英語)がいる場合は
                          % コメントアウトし名前を書く
                          % 副指導教員がいない場合は，ここは削除しても可
-\jdate{2016年1月31日}    % 論文提出日   (日本語)
-\edate{January 31, 2016}     % 論文提出年月　(英語)
+\jdate{平成28年1月29日}    % 論文提出日   (日本語)
+\edate{January 29, 2016}     % 論文提出年月　(英語)
 % タイトルなどの定義の終わり
 
 \begin{document}
@@ -183,7 +182,7 @@ Keyrods1, Keyword2, Keyword3, Keyword4, Keyword5
 \begin{table}[htb]
 \begin{center}
 \caption{既存の旅のしおり作成ツールの比較}
-  \begin{tabular}{|c|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|} \hline
+  \begin{tabular}{|c|p{2.4cm}|p{2.4cm}|p{2.4cm}|p{2.4cm}|} \hline
      & 観光スケジュールの作成 & 観光スポットの検索 & 移動手段・時間の表示 & しおりのデザインの決定 \\ \hline 
     ポケ旅 & ○ & ○ & ○ & × \\ \hline
     旅のしおり工房 & ○ & × & × & ○ \\ \hline
@@ -197,12 +196,60 @@ Keyrods1, Keyword2, Keyword3, Keyword4, Keyword5
 
 
 \subsection{旅行計画作成に関するアンケート}
+次に本学の学生，教員，事務員に対して旅行計画作成に関するアンケートを行った．52人にアンケートの回答を依頼したところ18人から回答があった．\\
+　「旅行前に旅行の計画を紙やファイルなどをどこかに記録するか」という質問に対して「計画を立てて記録する」が56\%，「計画を立てるが記録しない」が33\%，計画を立てないが11\%であった(図1)．「計画を立てて記録する」と回答した人は具体的に紙やGoogleドライブに記録するという回答があった．
+\begin{figure}[htpb]
+\begin{center}
+%\includegraphics[width=4cm, height=2cm]{filerecord.eps}
+\includegraphics[scale=1.0]{filerecord.eps}
+\caption{旅行前に計画を記録するか}
+\end{center}
+\end{figure}
 
+「旅行前に旅行の計画を誰かに話すか」という質問に対して「はい」は84\%「いいえ」は11\%「旅行の計画を立てない」が5\%であった(図2)．\\
+\begin{figure}[htpb]
+\begin{center}
+%\includegraphics[width=4cm, height=2cm]{filerecord.eps}
+\includegraphics[scale=1.0]{beforetalktrip.eps}
+\caption{旅行前に計画を話すか}
+\end{center}
+\end{figure}
+
+「旅行後に旅行の計画を誰かに話すか」という質問に対して「はい」は32\%「いいえ」は63\%「旅行の計画を立てない」が5\%であった(図3)．\\
+\begin{figure}[htpb]
+\begin{center}
+%\includegraphics[width=4cm, height=2cm]{filerecord.eps}
+\includegraphics[scale=1.0]{aftertalktrip.eps}
+\caption{旅行後に計画を話すか}
+\end{center}
+\end{figure}
+
+「旅行の計画を立てることをどう思うか(複数回答可)」という質問に対して，「楽しい」という回答が最も多く次点で「面倒」「わくわくする」「自分で立てたい」が続いた(図4)．\\
+\begin{figure}[htpb]
+\begin{center}
+%\includegraphics[width=4cm, height=2cm]{filerecord.eps}
+\includegraphics[scale=1.0]{howthinktrip.eps}
+\caption{旅行計画を立てることをどう思うか}
+\end{center}
+\end{figure}
+
+これらの結果から，旅行の計画を立てる人は多く，旅行前に計画を話すということも行われることが多いとわかった．また，旅行計画を立てることに楽しさを感じる人が多いが，面倒だと感じる人も多い．そのためツールで楽しさを感じてもらいつつ，面倒さを解消することが必要になる．\\
 
 
 
 %--------------------------------------------------------------------
 \chapter{予備実験}% 5章のタイトル
+
+ツールを作成するうえで必要になる機能，特に「楽しさ」という観点で見た場合にどのような要素が必要になるかということや，どのような場面でユーザは「楽しさ」を感じているかということを調べるために予備実験を行う．この予備実験を計画する際に本学の認知科学に詳しい教員にアドバイスをいただいた．その内容は「被験者は1名ではなく2名で行ってもらい，その2名も可能であれば実際に旅行に行くような間柄の関係の人にすべき」，「複数の案から選択できるような形式にする」，「被験者の発言内容，表情，口調などから読み取れることがある」というものであった．そこで予備実験の方法として，被験者2名ずつペアになってもらい，こちらが数パターン用意した旅行計画の概要の中から行きたいというものを選んでもらう．また既存のツールを用いて実際に旅行計画を立ててもらうということを考えている(図5)．
+\begin{figure}[htpb]
+\begin{center}
+%\includegraphics[width=4cm, height=2cm]{filerecord.eps}
+\includegraphics[scale=0.65]{semiexp.eps}
+\caption{予備実験イメージ}
+\end{center}
+\end{figure}
+
+この際，被験者には思考の過程を声に出しながら行ってもらうことで，より被験者の思考がわかりやすくしたいと考えている．また被験者の表情や発話の内容，などを記録し分析する．\\
 
 \section{評価結果}
 
@@ -223,29 +270,26 @@ FUNにも同様の能力を持たせることができることが判明した�
 %--------------------------------------------------------------------
 \chapter{作成するツール}% 6章のタイトル
 
+現時点ではツールの構成イメージとしてAPI等を用いて地図や乗り換え案内，ルート検索などのツールと組み合わせ移動手段・時間を表示する(図6)．
+\begin{figure}[htpb]
+\begin{center}
+%\includegraphics[width=4cm, height=2cm]{filerecord.eps}
+\includegraphics[scale=0.3]{willmaketools2.eps}
+\caption{作成ツールイメージ}
+\end{center}
+\end{figure}
+
+詳細は未定だがツール作成において「楽しさ」を感じることができるように工夫する．どのような要素が満たされていると旅行計画に「楽しさ」を感じてもらえるかは予備実験の結果を参考にする．\\
 
 %--------------------------------------------------------------------
 \chapter{結論と今後の展開}% 7章のタイトル
 
 \section{まとめ}
 
-Java言語との比較では，惨敗であり，FUNは2倍の
-記述量を必要とした．しかし，これは，Javaのもつ
-パッケージIKURAが非常に強力であるためで，
-同一機能をもつライブラリを用意することにより，
-FUNにも同様の能力を持たせることができることが判明した．
+本研究ではツールを組み合わせ，移動手段・時間を考慮した旅のしおりによる観光スケジュール支援を行う．現段階では既存のツールと旅行計画作成の考え方の調査を行い，既存の旅のしおり作成ツールは移動手段・時間を考慮していないこと，旅行計画を立てる人の割合が多いこと，旅行計画作成について「楽しい」「面倒」と考える人が多いことがわかった．\\
+　今後はユーザが旅のしおりを作成するうえで「楽しさ」を感じてもらうためにはどのようなことが必要になるかということや，そのことを踏まえて必要機能の検討とツールの設計，実装を行う．
 
-Java言語との比較では，惨敗であり，FUNは2倍の
-記述量を必要とした．しかし，これは，Javaのもつ
-パッケージIKURAが非常に強力であるためで，
-同一機能をもつライブラリを用意することにより，
-FUNにも同様の能力を持たせることができることが判明した．
 
-Java言語との比較では，惨敗であり，FUNは2倍の
-記述量を必要とした．しかし，これは，Javaのもつ
-パッケージIKURAが非常に強力であるためで，
-同一機能をもつライブラリを用意することにより，
-FUNにも同様の能力を持たせることができることが判明した．
 
 \section{今後の方針}
 
@@ -257,15 +301,16 @@ FUNにも同様の能力を持たせることができることが判明した�
 
 
 %--------------------------------------------------------------------
-\chapter*{謝辞}
+%\chapter*{謝辞}
 
-謝辞を書く．
 
 
 %--------------------------------------------------------------------
 % 参考文献
 \begin{thebibliography}{9}
- \bibitem {A1} ほげほげお, 「うんたらかんたら」, 2003.
+ \bibitem{blgen} 倉田陽平ら，旅行プラン作成ツールCT-Plannerのプラットフォーム化に向けて，観光情報学会第11回全国大会，pp.38-39，2014
+\bibitem{webp}  {\url{https://poketabi.com/}}
+\bibitem{wagby}  {\url{https://www.mapfan.com/shiori/}}
 \end{thebibliography}
 
 
