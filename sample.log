@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.5-130605-2.6 (utf8.euc) (TeX Live 2014) (preloaded format=platex 2015.4.16)  19 DEC 2015 15:46
+This is e-pTeX, Version 3.14159265-p3.5-130605-2.6 (utf8.euc) (TeX Live 2014) (preloaded format=platex 2015.4.16)  19 DEC 2015 18:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -145,22 +145,22 @@ LaTeX Font Warning: Font shape `JY1/mc/m/it' undefined
 ]
 第 4 章
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 170--170
 []\JY1/mc/m/n/10.95 観光スケ
  []
 
 
-Underfull \hbox (badness 7522) in paragraph at lines 186--186
+Underfull \hbox (badness 7522) in paragraph at lines 170--170
 \JY1/mc/m/n/10.95 ジ ュ ールの作
  []
 
 
-Underfull \hbox (badness 7522) in paragraph at lines 186--186
+Underfull \hbox (badness 7522) in paragraph at lines 170--170
 []\JY1/mc/m/n/10.95 観光スポ ッ ト
  []
 
 
-Underfull \hbox (badness 1622) in paragraph at lines 186--186
+Underfull \hbox (badness 1622) in paragraph at lines 170--170
 []\JY1/mc/m/n/10.95 しおりのデザ
  []
 
@@ -220,4 +220,4 @@ Here is how much of TeX's memory you used:
  929 hyphenation exceptions out of 8191
  25i,9n,19p,762b,321s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on sample.dvi (18 pages, 36004 bytes).
+Output written on sample.dvi (18 pages, 34592 bytes).
