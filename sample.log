@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.5-130605-2.6 (utf8.euc) (TeX Live 2014) (preloaded format=platex 2015.4.16)  26 JAN 2016 21:08
+This is e-pTeX, Version 3.14159265-p3.5-130605-2.6 (utf8.euc) (TeX Live 2014) (preloaded format=platex 2015.4.16)  26 JAN 2016 21:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -60,17 +60,7 @@ File: dvips.def 2014/04/23 v3.0j Driver-dependant file (DPC,SPQR)
 (/usr/local/texlive/2014/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-) (./sample.aux
-
-LaTeX Warning: Label `Lshiori1' multiply defined.
-
-
-LaTeX Warning: Label `Lshiori2' multiply defined.
-
-
-LaTeX Warning: Label `Lshiori3' multiply defined.
-
-)
+) (./sample.aux)
 \openout1 = `sample.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
@@ -105,7 +95,8 @@ LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 42.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 42.
- [1
+
+[1
 
 ]
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10> not available
@@ -114,9 +105,9 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 46.
  [0]
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <20.74> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 83.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 90.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <20.74> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 83.
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 90.
  (./sample.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <10.95> on input line 2.
@@ -143,7 +134,7 @@ LaTeX Font Warning: Font shape `JY1/mc/m/it' undefined
 第 1 章
 File: kokunaitrip.eps Graphic file (type eps)
 <kokunaitrip.eps>
-Overfull \hbox (62.84909pt too wide) in paragraph at lines 99--100
+Overfull \hbox (62.84909pt too wide) in paragraph at lines 106--107
  [] 
  []
 
@@ -154,7 +145,7 @@ File: tripgyosya.eps Graphic file (type eps)
 第 2 章
 File: ctplannner.eps Graphic file (type eps)
 <ctplannner.eps>
-Overfull \hbox (17.4622pt too wide) in paragraph at lines 144--145
+Overfull \hbox (17.4622pt too wide) in paragraph at lines 151--152
  [] 
  []
 
@@ -172,42 +163,42 @@ File: toppoke.eps Graphic file (type eps)
 <toppoke.eps>
 File: topkobo.eps Graphic file (type eps)
  <topkobo.eps>
-Underfull \hbox (badness 10000) in paragraph at lines 240--240
+Underfull \hbox (badness 10000) in paragraph at lines 247--247
 []\JY1/mc/m/n/10.95 観光スケ
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 240--240
+Underfull \hbox (badness 10000) in paragraph at lines 247--247
 \JY1/mc/m/n/10.95 ジ ュ ールの
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 240--240
+Underfull \hbox (badness 10000) in paragraph at lines 247--247
 []\JY1/mc/m/n/10.95 観光スポ ッ
  []
 
 
-Underfull \hbox (badness 1838) in paragraph at lines 240--240
+Underfull \hbox (badness 1838) in paragraph at lines 247--247
 \JY1/mc/m/n/10.95 間の自動表
  []
 
 
-Underfull \hbox (badness 1838) in paragraph at lines 240--240
+Underfull \hbox (badness 1838) in paragraph at lines 247--247
 []\JY1/mc/m/n/10.95 しおりのデ
  []
 
 
-Underfull \hbox (badness 1838) in paragraph at lines 240--240
+Underfull \hbox (badness 1838) in paragraph at lines 247--247
 \JY1/mc/m/n/10.95 ザインの決
  []
 
 
-Underfull \hbox (badness 1838) in paragraph at lines 240--240
+Underfull \hbox (badness 1838) in paragraph at lines 247--247
 []\JY1/mc/m/n/10.95 マルチデバ
  []
 
 
-Overfull \hbox (12.2813pt too wide) in paragraph at lines 239--244
+Overfull \hbox (12.2813pt too wide) in paragraph at lines 246--251
  [] 
  []
 
@@ -229,14 +220,14 @@ File: akitime.eps Graphic file (type eps)
  <akitime.eps> [12] [13]
 File: websyutyo.eps Graphic file (type eps)
  <websyutyo.eps>
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 359.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 366.
 
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 359.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 366.
 File: webtrip.eps Graphic file (type eps)
  <webtrip.eps>
 [14] [15]
@@ -254,22 +245,24 @@ File: semiexp.eps Graphic file (type eps)
 <semiexp.eps> [22
 
 ]
+
+LaTeX Warning: Reference `Lexpfoto' on page 23 undefined on input line 555.
+
 File: expfoto.eps Graphic file (type eps)
- <expfoto.eps> [23]
+<expfoto.eps> [23]
 File: shiori1.eps Graphic file (type eps)
  <shiori1.eps>
 File: shiori2.eps Graphic file (type eps)
  <shiori2.eps>
 File: shiori3.eps Graphic file (type eps)
-
-<shiori3.eps>
-Overfull \hbox (0.76265pt too wide) in paragraph at lines 593--594
+ <shiori3.eps>
+Overfull \hbox (0.76265pt too wide) in paragraph at lines 600--601
  [] 
  []
 
 File: goicon.eps Graphic file (type eps)
 <goicon.eps>
-Overfull \hbox (9.89674pt too wide) in paragraph at lines 612--613
+Overfull \hbox (9.89674pt too wide) in paragraph at lines 619--620
  [] 
  []
 
@@ -285,14 +278,14 @@ File: willmaketools2.eps Graphic file (type eps)
 ] [32
 
 ]
-Underfull \hbox (badness 1728) in paragraph at lines 685--686
+Underfull \hbox (badness 1728) in paragraph at lines 698--699
 []\JY1/mc/m/n/10.95 日本交通公社\OT1/cmr/m/n/10.95 , \JY1/mc/m/n/10.95 日本の国
 内旅行 $\OT1/cmtt/m/n/10.95 https : / / www . jtb . or . jp / wp-[]content / up
 loads /
  []
 
 
-Underfull \hbox (badness 7415) in paragraph at lines 689--690
+Underfull \hbox (badness 7415) in paragraph at lines 702--703
 []\OT1/cmr/m/n/10.95 TRAVELER'S COM-PANY -JAPAN-, $\OT1/cmtt/m/n/10.95 http : /
  / www . travelers-[]company . com /
  []
@@ -302,37 +295,37 @@ Underfull \hbox (badness 7415) in paragraph at lines 689--690
 ]
 File: ank1.eps Graphic file (type eps)
  <ank1.eps>
-Overfull \hbox (20.43608pt too wide) in paragraph at lines 711--712
+Overfull \hbox (20.43608pt too wide) in paragraph at lines 724--725
  [] 
  []
 
 File: ank2.eps Graphic file (type eps)
 <ank2.eps>
-Overfull \hbox (23.24657pt too wide) in paragraph at lines 719--720
+Overfull \hbox (23.24657pt too wide) in paragraph at lines 732--733
  [] 
  []
 
 File: ank3.eps Graphic file (type eps)
 <ank3.eps>
-Overfull \hbox (24.65181pt too wide) in paragraph at lines 727--728
+Overfull \hbox (24.65181pt too wide) in paragraph at lines 740--741
  [] 
  []
 
 File: ank4.eps Graphic file (type eps)
 <ank4.eps>
-Overfull \hbox (22.54395pt too wide) in paragraph at lines 735--736
+Overfull \hbox (22.54395pt too wide) in paragraph at lines 748--749
  [] 
  []
 
 File: ank5.eps Graphic file (type eps)
 <ank5.eps>
-Overfull \hbox (20.43608pt too wide) in paragraph at lines 743--744
+Overfull \hbox (20.43608pt too wide) in paragraph at lines 756--757
  [] 
  []
 
 File: ank6.eps Graphic file (type eps)
 <ank6.eps>
-Overfull \hbox (19.73346pt too wide) in paragraph at lines 751--752
+Overfull \hbox (19.73346pt too wide) in paragraph at lines 764--765
  [] 
  []
 
@@ -356,16 +349,16 @@ Overfull \hbox (19.73346pt too wide) in paragraph at lines 751--752
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
-LaTeX Warning: There were multiply-defined labels.
+LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
  897 strings out of 493807
  10451 string characters out of 6151951
- 76165 words of memory out of 5000000
+ 77165 words of memory out of 5000000
  4364 multiletter control sequences out of 15000+600000
  18071 words of font info for 70 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
  25i,9n,22p,987b,377s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on sample.dvi (45 pages, 101984 bytes).
+Output written on sample.dvi (45 pages, 103992 bytes).
