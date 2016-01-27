@@ -1,0 +1,84 @@
+% 公立はこだて未来大学 卒業論文 テンプレート ver1.50
+% (c) Junichi Akita (akita@fun.ac.jp), 2003.10.31
+% update by N.T.,  2004.11.10
+%
+\documentclass{funthesis}
+%\documentclass[english]{funthesis} % use [english] option for English style
+
+\usepackage{graphicx} % 図(EPS形式)を本文中で読み込む場合はこれを宣言
+\usepackage{url}
+
+% この部分に，タイトル・氏名などを書く．
+% タイトルなどの定義の始まり
+\jtitle{移動手段・時間を考慮した旅のしおりによる\\
+観光スケジュール作成支援 }  % 論文の和文タイトル
+%
+\etitle{Support for Making Tourism Schedule for Traveler's Notebook that Considered Moving Transportation and Time
+}% 論文の英文タイトル
+%
+\htitle{Making Tourism Schedule for Traveler's Notebook that Considered Moving Transportation and Time}   % ヘッダー用の論文の短縮英文タイトル
+%     必ず1行に収まるように英文タイトルを短縮する．
+%
+\jauthor{辻浦 崇大}     % 氏名(日本語)
+\eauthor{Takahiro Tsujiura}   % 氏名(英語)
+\jaffiliciation{情報アーキテクチャ学科} % 所属学科名(日本語)
+\eaffiliciation{Department of Media Architecture} % 所属学科名(英語)
+\studentnumber{1012178}   % 学籍番号
+\jadvisor{伊藤 恵}    % 正指導教員名(日本語)
+%\jcoadvisor{副指導 教員} % 副指導教員(日本語)がいる場合は
+                        % コメントアウトし名前を書く
+                        % 副指導教員がいない場合は，ここは削除しても可
+\eadvisor{Kei Ito}  % 正指導教員名(英語)
+%\ecoadvisor{Prof. Coadvisor}   % 副指導教員(英語)がいる場合は
+                         % コメントアウトし名前を書く
+                         % 副指導教員がいない場合は，ここは削除しても可
+\jdate{平成28年1月29日}    % 論文提出日   (日本語)
+\edate{January 29, 2016}     % 論文提出年月　(英語)
+% タイトルなどの定義の終わり
+
+\begin{document}
+
+%--------------------------------------------------------------------
+\maketitle       % タイトルページを作成
+
+%--------------------------------------------------------------------
+% 英文概要(250語程度)
+\begin{eabstract}
+This study tries to develop a tool that making Traveler's Notebook that considered moving transportation and time for making tourism schedule efficiently.
+I investigated existing tools that making Traveler's Notebook. The results of the investigation proved that users must manually specify tourist attraction, moving transportation and moving time in such tools.
+I took the questionnaire for investigating how think making travel schedule. The results of the questionnaire proved that many people think making travel schedule is " fun" or " bothering".
+I thought that making tourism schedule efficiently is possible not only displaying destination but also displaying automatically moving transportation and time between destination to destination.
+I did semi-experiment for investigating functions that needed for tool that making Traveler's Notebook. The results of this semi-experiment proved that what functions are needed and when user feels fun in making travel schedule. This study considers fun in making travel schedule, in travel, after travel.
+This study tries to support displaying destination by the combination of existing tools, displaying automatically moving transportation and time between destination to destination, having fun more travel.
+
+
+
+\end{eabstract}
+
+% 英文キーワード(5個程度をコンマ(,)で区切って羅列する)
+\begin{ekeyword}
+Travel, Making Schedule, Traveler's Notebook, Moving Transportation, Moving Time
+\end{ekeyword}
+
+%--------------------------------------------------------------------
+% 和文概要(400字程度)
+\begin{jabstract}
+効率的な観光スケジュール作成を支援するために，移動手段・時間を考慮した旅のしおり作成ツールの開発を試みる．
+既存の旅のしおり作成ツールの調査を行ったところ，観光スポットや移動手段・時間を手動で入力することが分かった
+旅行計画に対する考え方を知るためにアンケート調査を行ったところ，旅行計画の作成について「楽しい」「面倒」と考える人が多いことが分かった．
+そこで目的地を表示するだけでなく，目的地間の移動手段・時間を自動的に表示することで効率的な観光スケジュール作成の支援が可能になると考えた．
+ツールを作成するうえで必要になる機能を知るために予備実験を行ったところ，必要となる機能や楽しさを感じる場面が分かった．よって旅行計画の作成中，旅行中，旅行後の振り返り時の楽しさの向上も考慮する．
+そこで本研究では既存のツールを組み合わせることで目的地を表示すること，目的地間の移動手段・時間を自動的に表示することの他，旅行をより楽しむことの支援を試みる．
+
+
+
+
+\end{jabstract}
+
+% 和文キーワード(5個程度をコンマ(,)で区切って羅列する)
+\begin{jkeyword}
+観光, スケジュール作成, 旅のしおり, 移動手段, 移動時間
+\end{jkeyword}
+
+
+\end{document}
